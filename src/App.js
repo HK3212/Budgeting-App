@@ -1,9 +1,10 @@
 import React from "react"
+import NewAmount from "./components/NewAmount"
 
 function App() {
   return (
     <div className="App">
-      <p>Budgeting Application</p>
+      <NewAmount></NewAmount>
     </div>
   )
 }
