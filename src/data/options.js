@@ -1,5 +1,4 @@
-import React from "react"
-import Select from "react-select"
+//Income and expense options
 
 const incomeOptions = [
   { value: "employment", label: "Employment" },
@@ -17,10 +16,10 @@ const expenseOptions = [
   { value: "entertainment", label: "Entertainment" },
   { value: "clothing", label: "Clothing" },
   { value: "travel", label: "Travel" },
-  { value: "helath", label: "Health" },
+  { value: "health", label: "Health" },
 ]
 
-export const groupedOptions = [
+const groupedOptions = [
   {
     label: "Income",
     options: incomeOptions,
@@ -32,25 +31,4 @@ export const groupedOptions = [
   },
 ]
 
-const groupStyles = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-}
-
-const formatGroupLabel = (data) => (
-  <div style={groupStyles}>
-    <span>{data.label}</span>
-    <span>{data.options.length}</span>
-  </div>
-)
-
-export default () => (
-  <div style={{ width: "200px" }}>
-    <Select
-      defaultValue={incomeOptions[1]}
-      options={groupedOptions}
-      formatGroupLabel={formatGroupLabel}
-    />
-  </div>
-)
+export default groupedOptions
