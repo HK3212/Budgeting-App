@@ -2,41 +2,42 @@ import React, { useState, useEffect } from "react"
 import groupedOptions from "../data/options"
 import Select from "react-select"
 
-const NewBudgetItem = ({ createBudgetItem }) => {
+const BudgetForm = ({ createBudgetItem }) => {
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
 
   //Using for console log after new renders
-  useEffect(() => {
-    console.log(selectedOption)
-    console.log(amount)
-    console.log(description)
-  }, [amount, description, selectedOption])
+  // useEffect(() => {
+  //   console.log(selectedOption)
+  //   console.log(amount)
+  //   console.log(description)
+  // }, [amount, description, selectedOption])
 
   const handleAmount = (event) => {
     setAmount(event.target.value)
-    console.log(amount)
   }
 
   const handleDescription = (event) => {
     setDescription(event.target.value)
-    console.log(description)
   }
 
   const handleOption = (event) => {
     setSelectedOption(event.value)
-    //console.log(selectedOption)
   }
 
   const addBudgetItem = (event) => {
     event.preventDefault()
     //created item based on schema
-    // createBudgetItem({
-    //   type: selectedOption,
-    //   description: description,
-    //   value: amount,
-    // })
+    createBudgetItem({
+      type: selectedOption,
+      description: description,
+      value: amount,
+    })
+
+    setAmount("")
+    setDescription("")
+    setSelectedOption("")
   }
 
   //Styling for dropdown
@@ -69,4 +70,4 @@ const NewBudgetItem = ({ createBudgetItem }) => {
   )
 }
 
-export default NewBudgetItem
+export default BudgetForm
