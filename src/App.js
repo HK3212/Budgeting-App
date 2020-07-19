@@ -17,7 +17,9 @@ function App() {
   return (
     <div className="App">
       <BudgetForm createBudgetItem={createBudgetItem} />
-      <Budget budget={budget} />
+      {budget.map((budgetItem, i) => (
+        <Budget key={i} budget={budgetItem} />
+      ))}
     </div>
   )
 }

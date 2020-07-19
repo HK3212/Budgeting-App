@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import groupedOptions from "../data/options"
+import groupedOptions, { incomeOptions, expenseOptions } from "../data/options"
 import Select from "react-select"
 
 const BudgetForm = ({ createBudgetItem }) => {
@@ -29,11 +29,22 @@ const BudgetForm = ({ createBudgetItem }) => {
   const addBudgetItem = (event) => {
     event.preventDefault()
     //created item based on schema
-    createBudgetItem({
-      type: selectedOption,
-      description: description,
-      value: amount,
-    })
+    if (
+      expenseOptions.some((checkType) => checkType.value === selectedOption)
+    ) {
+      const expenseAmount = amount * -1
+      createBudgetItem({
+        type: selectedOption,
+        description: description,
+        value: expenseAmount,
+      })
+    } else {
+      createBudgetItem({
+        type: selectedOption,
+        description: description,
+        value: amount,
+      })
+    }
 
     setAmount("")
     setDescription("")

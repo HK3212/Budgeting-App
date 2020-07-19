@@ -1,6 +1,6 @@
 //Income and expense options
 
-const incomeOptions = [
+export const incomeOptions = [
   { value: "employment", label: "Employment" },
   { value: "commerce", label: "Commerce" },
   { value: "dividends", label: "Dividends" },
@@ -8,7 +8,7 @@ const incomeOptions = [
   { value: "return", label: "Tax Return" },
 ]
 
-const expenseOptions = [
+export const expenseOptions = [
   { value: "groceries", label: "Groceries" },
   { value: "dining", label: "Dining" },
   { value: "transportation", label: "Transportation" },

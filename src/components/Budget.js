@@ -4,7 +4,13 @@ import { incomeOptions, expenseOptions } from "../data/options"
 //Display budget entries, negative values for expenses
 
 const Budget = ({ budget }) => {
-  return <span>Budget</span>
+  return (
+    <div className="budgetItem">
+      <span>{budget.type}</span>
+      <span>{budget.description}</span>
+      <span>{budget.value}</span>
+    </div>
+  )
 }
 
 export default Budget
