@@ -23,14 +23,14 @@ const BudgetForm = ({ createBudgetItem }) => {
   }
 
   const handleOption = (event) => {
-    setSelectedOption(event.value)
+    setSelectedOption(event.label)
   }
 
   const addBudgetItem = (event) => {
     event.preventDefault()
     //created item based on schema
     if (
-      expenseOptions.some((checkType) => checkType.value === selectedOption)
+      expenseOptions.some((checkType) => checkType.label === selectedOption)
     ) {
       const expenseAmount = amount * -1
       createBudgetItem({

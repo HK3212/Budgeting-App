@@ -1,14 +1,13 @@
 import React from "react"
-import { incomeOptions, expenseOptions } from "../data/options"
 
 //Display budget entries, negative values for expenses
 
 const Budget = ({ budget }) => {
   return (
-    <div className="budgetItem">
-      <span>{budget.type}</span>
-      <span>{budget.description}</span>
-      <span>{budget.value}</span>
+    <div>
+      <span className="budgetItem">{budget.type}</span>
+      <span className="budgetItem">{budget.description}</span>
+      <span className="budgetItem">{budget.value}</span>
     </div>
   )
 }
