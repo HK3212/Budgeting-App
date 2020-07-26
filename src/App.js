@@ -14,20 +14,32 @@ function App() {
     setBudget(budget.concat(budgetItem))
   }
 
-  const incomeValues = budget.map((budgetItem) => {
-    if (budgetItem.isIncome === true) {
-      return parseInt(budgetItem.value)
-    } else {
-      return 0
-    }
+  const incomeItems = budget
+    .map((budgetItem) => {
+      if (budgetItem.isIncome === true) {
+        return budgetItem
+      } else {
+        return 0
+      }
+    })
+    .filter((incomeItem) => incomeItem.type !== undefined)
+
+  const incomeValues = incomeItems.map((budgetItem) => {
+    return parseInt(budgetItem.value)
   })
 
-  const expenseValues = budget.map((budgetItem) => {
-    if (budgetItem.isIncome === false) {
-      return parseInt(budgetItem.value)
-    } else {
-      return 0
-    }
+  const expenseItems = budget
+    .map((budgetItem) => {
+      if (budgetItem.isIncome === false) {
+        return budgetItem
+      } else {
+        return 0
+      }
+    })
+    .filter((expenseItem) => expenseItem.type !== undefined)
+
+  const expenseValues = expenseItems.map((budgetItem) => {
+    return parseInt(budgetItem.value)
   })
 
   const totalIncome = incomeValues.reduce((a, b) => a + b, 0)
@@ -38,7 +50,7 @@ function App() {
 
   const totalPerType = d3arr
     .rollups(
-      budget,
+      expenseItems,
       (val) => d3.sum(val, (budgetItem) => budgetItem.value),
       (d) => d.type
     )
