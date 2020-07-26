@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"
 import Budget from "./components/Budget"
 import BudgetForm from "./components/BudgetForm"
+import NumberFormat from "react-number-format"
+import PieChart from "./components/PieChart"
+import * as d3 from "d3"
+import * as d3arr from "d3-array"
 
 function App() {
   const [budget, setBudget] = useState([])
-
-  useEffect(() => {
-    console.log(budget)
-  }, [budget])
 
   const createBudgetItem = (budgetItem) => {
     //create budget item and add to database
@@ -15,7 +15,7 @@ function App() {
   }
 
   const incomeValues = budget.map((budgetItem) => {
-    if (budgetItem.value >= 0) {
+    if (budgetItem.isIncome === true) {
       return parseInt(budgetItem.value)
     } else {
       return 0
@@ -23,7 +23,7 @@ function App() {
   })
 
   const expenseValues = budget.map((budgetItem) => {
-    if (budgetItem.value < 0) {
+    if (budgetItem.isIncome === false) {
       return parseInt(budgetItem.value)
     } else {
       return 0
@@ -32,12 +32,21 @@ function App() {
 
   const totalIncome = incomeValues.reduce((a, b) => a + b, 0)
 
-  const totalExpenses = -1 * expenseValues.reduce((a, b) => a + b, 0)
+  const totalExpenses = expenseValues.reduce((a, b) => a + b, 0)
 
   const savings = totalIncome - totalExpenses
 
-  console.log(incomeValues, expenseValues)
-  console.log(totalIncome, totalExpenses)
+  const totalPerType = d3arr
+    .rollups(
+      budget,
+      (val) => d3.sum(val, (budgetItem) => budgetItem.value),
+      (d) => d.type
+    )
+    .map(([type, value]) => ({ type: type, value: value }))
+
+  useEffect(() => {
+    console.log(totalPerType)
+  }, [totalPerType])
 
   return (
     <div className="App">
@@ -50,12 +59,43 @@ function App() {
         ))}
       </div>
       <div className="BudgetTotals">
-        <span>Total Income: {totalIncome}</span>
+        <span>
+          Total Income:
+          <NumberFormat
+            value={totalIncome}
+            displayType={"text"}
+            prefix={"$"}
+            thousandSeparator={true}
+          />
+        </span>
         <br></br>
-        <span>Total Expenses: {totalExpenses}</span>
+        <span>
+          Total Expenses:
+          <NumberFormat
+            value={totalExpenses}
+            displayType={"text"}
+            prefix={"$"}
+            thousandSeparator={true}
+          />
+        </span>
         <br></br>
-        <span>Savings: {savings}</span>
+        <span>
+          Savings:
+          <NumberFormat
+            value={savings}
+            displayType={"text"}
+            prefix={"$"}
+            thousandSeparator={true}
+          />
+        </span>
       </div>
+      <PieChart
+        data={totalPerType}
+        width={200}
+        height={200}
+        innerRadius={60}
+        outerRadius={100}
+      />
     </div>
   )
 }

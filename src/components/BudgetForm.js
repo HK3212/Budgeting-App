@@ -32,14 +32,15 @@ const BudgetForm = ({ createBudgetItem }) => {
     if (
       expenseOptions.some((checkType) => checkType.label === selectedOption)
     ) {
-      const expenseAmount = amount * -1
       createBudgetItem({
+        isIncome: false,
         type: selectedOption,
         description: description,
-        value: expenseAmount,
+        value: amount,
       })
     } else {
       createBudgetItem({
+        isIncome: true,
         type: selectedOption,
         description: description,
         value: amount,
