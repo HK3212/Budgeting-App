@@ -49,7 +49,7 @@ const BudgetForm = ({ createBudgetItem }) => {
 
     setAmount("")
     setDescription("")
-    setSelectedOption("")
+    //setSelectedOption("")
   }
 
   //Styling for dropdown

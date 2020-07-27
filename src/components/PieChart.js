@@ -15,7 +15,6 @@ const PieChart = (props) => {
   const format = d3.format(".2f")
 
   useEffect(() => {
-    console.log(props.data)
     const data = createPie(props.data)
     const group = d3.select(ref.current)
     const groupWithData = group.selectAll("g.arc").data(data)
@@ -36,18 +35,40 @@ const PieChart = (props) => {
       .attr("d", createArc)
       .attr("fill", (d, i) => colors(i))
 
-    const text = groupWithUpdate
-      .append("text")
-      .merge(groupWithData.select("text"))
+    // const text = groupWithUpdate
+    //   .append("text")
+    //   .merge(groupWithData.select("text"))
 
-    text
-      .attr("text-anchor", "middle")
-      .attr("alignment-baseline", "middle")
-      .attr("transform", (d) => `translate(${createArc.centroid(d)})`)
-      .style("fill", "white")
-      .style("font-size", 10)
-      .text((d) => format(d.value))
-  }, [colors, createArc, createPie, format, props.data])
+    // text
+    //   .attr("text-anchor", "middle")
+    //   .attr("alignment-baseline", "middle")
+    //   .attr("transform", (d) => `translate(${createArc.centroid(d)})`)
+    //   .style("fill", "white")
+    //   .style("font-size", 14)
+    //   .text((d) => d.data.type + ": " + format(d.value))
+
+    const legendGroup = groupWithData
+      .enter()
+      .append("g")
+      .attr(
+        "transform",
+        (d, i) => `translate(` + (props.width - 270) + `,` + (i * 20 - 75) + `)`
+      )
+      .attr("class", "legend")
+
+    // legendGroup
+    //   .append("rect") //Color rect for legend
+    //   .attr("width", 15)
+    //   .attr("height", 15)
+    //   .attr("alignment-baseline", "middle")
+    //   .attr("fill", (d, i) => colors(i))
+
+    legendGroup
+      .append("text")
+      .text((d) => d.data.type + ": " + format(d.value))
+      .style("font-size", 18)
+      .style("fill", (d, i) => colors(i))
+  }, [colors, createArc, createPie, format, props.data, props.width])
 
   return (
     <svg width={props.width} height={props.height}>

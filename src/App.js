@@ -48,6 +48,8 @@ function App() {
 
   const savings = totalIncome - totalExpenses
 
+  //Total for each expense type
+  //TODO: Add Savings to expense chart
   const totalPerType = d3arr
     .rollups(
       expenseItems,
@@ -103,8 +105,8 @@ function App() {
       </div>
       <PieChart
         data={totalPerType}
-        width={200}
-        height={200}
+        width={400}
+        height={400}
         innerRadius={60}
         outerRadius={100}
       />
