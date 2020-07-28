@@ -47,9 +47,9 @@ const PieChart = (props) => {
     //   .style("font-size", 14)
     //   .text((d) => d.data.type + ": " + format(d.value))
 
-    const legendGroup = groupWithData
-      .enter()
-      .append("g")
+    const legendGroup = groupWithUpdate
+      .append("text")
+      .merge(groupWithData.select("text"))
       .attr(
         "transform",
         (d, i) => `translate(` + (props.width - 270) + `,` + (i * 20 - 75) + `)`
@@ -64,7 +64,6 @@ const PieChart = (props) => {
     //   .attr("fill", (d, i) => colors(i))
 
     legendGroup
-      .append("text")
       .text((d) => d.data.type + ": " + format(d.value))
       .style("font-size", 18)
       .style("fill", (d, i) => colors(i))
