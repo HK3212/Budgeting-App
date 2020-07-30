@@ -5,12 +5,61 @@ import NumberFormat from "react-number-format"
 import PieChart from "./components/PieChart"
 import * as d3 from "d3"
 import * as d3arr from "d3-array"
+import budgetService from "./services/budget"
+import loginService from "./services/login"
 
 function App() {
   const [budget, setBudget] = useState([])
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [user, setUser] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  //set budget to initial budget from DB
+  // useEffect(() => {
+  //   budgetService.getAll().then((initialBudget) => {
+  //     setBudget(initialBudget)
+  //   })
+  // }, [])
+
+  //TODO: handlelogin and check if user logged in at start
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+
+      window.localStorage.setItem("loggedbudgetappUser", JSON.stringify(user))
+
+      budgetService.setToken(user.token)
+      setUser(user)
+      setUsername("")
+      setPassword("")
+    } catch (exception) {
+      setErrorMessage("wrong credentials")
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem('loggedbudgetappUser')
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON)
+  //     setUser(user)
+  //     noteService.setToken(user.token)
+  //   }
+  // }, [])
 
   const createBudgetItem = (budgetItem) => {
     //create budget item and add to database
+    // budgetService.create(budgetObject).then((budgetItem) => {
+    //   setBudget(budget.concat(budgetItem))
+    // })
     setBudget(budget.concat(budgetItem))
   }
 
