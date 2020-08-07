@@ -29,15 +29,15 @@ budgetRouter.post("/", async (request, response, next) => {
   const user = await User.findById(decodedToken.id)
 
   const budgetItem = new BudgetItem({
-    type: body.selectedOption,
+    type: body.type,
     description: body.description,
     isIncome: body.isIncome,
-    value: body.amount,
+    value: body.value,
     user: user._id
   })
 
   const savedBudgetItem = await budgetItem.save()
-  user.budget = user.budget.concat(savedBugetItem._id)
+  user.budget = user.budget.concat(savedBudgetItem._id)
   await user.save()
 
   response.json(savedBudgetItem.toJSON())

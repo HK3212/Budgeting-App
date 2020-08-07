@@ -53,6 +53,7 @@ function App() {
       password={password}
       handleUsernameChange={({ target }) => setUsername(target.value)}
       handlePasswordChange={({ target }) => setPassword(target.value)}
+      handleSubmit={handleLogin}
     />
   )
 
@@ -116,9 +117,9 @@ function App() {
     )
     .map(([type, value]) => ({ type: type, value: value }))
 
-  useEffect(() => {
-    console.log(totalPerType)
-  }, [totalPerType])
+  // useEffect(() => {
+  //   console.log(totalPerType)
+  // }, [totalPerType])
 
   return (
     <div className="App">

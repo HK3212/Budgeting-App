@@ -4,7 +4,11 @@
   "description": "Budget Application backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "build:ui": "rm -rf build && cd ../frontend && npm run build --prod && cp -r build ../backend"
   },
   "author": "Hamza Khan",
   "license": "ISC",
@@ -16,5 +20,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.26",
     "mongoose-unique-validator": "^2.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
