@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Budget from "./components/Budget"
 import BudgetForm from "./components/BudgetForm"
+import LoginForm from "./components/LoginForm"
 import NumberFormat from "react-number-format"
 import PieChart from "./components/PieChart"
 import * as d3 from "d3"
@@ -46,21 +47,29 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   const loggedUserJSON = window.localStorage.getItem('loggedbudgetappUser')
-  //   if (loggedUserJSON) {
-  //     const user = JSON.parse(loggedUserJSON)
-  //     setUser(user)
-  //     noteService.setToken(user.token)
-  //   }
-  // }, [])
+  const loginForm = () => (
+    <LoginForm
+      username={username}
+      password={password}
+      handleUsernameChange={({ target }) => setUsername(target.value)}
+      handlePasswordChange={({ target }) => setPassword(target.value)}
+    />
+  )
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedbudgetappUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      budgetService.setToken(user.token)
+    }
+  }, [])
 
   const createBudgetItem = (budgetItem) => {
     //create budget item and add to database
-    // budgetService.create(budgetObject).then((budgetItem) => {
-    //   setBudget(budget.concat(budgetItem))
-    // })
-    setBudget(budget.concat(budgetItem))
+    budgetService.create(budgetItem).then((returnedItem) => {
+      setBudget(budget.concat(returnedItem))
+    })
   }
 
   const incomeItems = budget
@@ -113,9 +122,14 @@ function App() {
 
   return (
     <div className="App">
-      <div className="BudgetForm">
-        <BudgetForm createBudgetItem={createBudgetItem} />
-      </div>
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <p>{user.name} logged in</p>
+          <BudgetForm createBudgetItem={createBudgetItem} />
+        </div>
+      )}
       <div className="budgetItems">
         {budget.map((budgetItem, i) => (
           <Budget key={i} budget={budgetItem} />

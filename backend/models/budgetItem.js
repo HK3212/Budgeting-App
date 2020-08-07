@@ -1,7 +1,34 @@
-//TODO: get request to retrieve budget items
+const mongoose = require("mongoose")
 
-//TODO: post request to save new budget item
+mongoose.set("useFindAndModify", false)
 
-//TODO: delete request to remove budget item
+const budgetItemSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  isIncome: Boolean,
+  value: {
+    type: Number,
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+})
 
-//TODO: put request to update budget item
+budgetItemSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+    console.log(document)
+  },
+})
+
+module.exports = mongoose.model("budgetItem", budgetItemSchema)
