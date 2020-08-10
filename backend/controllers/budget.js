@@ -13,8 +13,16 @@ const getTokenFrom = (request) => {
 
 //TODO: get request to retrieve budget items
 
-budgetRouter.get("/", async (req, res) => {
-  const budget = await BudgetItem.find({}).populate("user")
+budgetRouter.get("/", async (request, response) => {
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const loggedUser = await User.findById(decodedToken.id)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid"})
+  }
+
+  const budget = await BudgetItem.find({ user: loggedUser }).populate('user', { username: 1, name: 1 })
+  response.json(budget.map((budgetItem) => budgetItem.toJSON()))
 })
 
 //TODO: post request to save new budget item
