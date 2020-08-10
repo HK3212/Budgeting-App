@@ -1,8 +1,8 @@
-//TODO: Add login/register form
+//TODO: Add register form
 import React from "react"
 import PropTypes from "prop-types"
 
-const LoginForm = ({
+const RegisterForm = ({
   handleSubmit,
   handleUsernameChange,
   handlePasswordChange,
@@ -12,7 +12,7 @@ const LoginForm = ({
 }) => {
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Register</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -32,18 +32,18 @@ const LoginForm = ({
             onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit" id="login-button">
-          Login
+        <button type="submit" id="register-button">
+          Register
         </button>
       </form>
       <button onClick={switchForm} type="switch" id="switch-button">
-        Create Account
+        Back to Login
       </button>
     </div>
   )
 }
 
-LoginForm.propTypes = {
+RegisterForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleUsernameChange: PropTypes.func.isRequired,
   handlePasswordChange: PropTypes.func.isRequired,
@@ -51,4 +51,4 @@ LoginForm.propTypes = {
   password: PropTypes.string.isRequired,
 }
 
-export default LoginForm
+export default RegisterForm

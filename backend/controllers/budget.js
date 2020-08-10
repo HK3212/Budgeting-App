@@ -41,6 +41,7 @@ budgetRouter.post("/", async (request, response, next) => {
     description: body.description,
     isIncome: body.isIncome,
     value: body.value,
+    date: new Date(),
     user: user._id
   })
 

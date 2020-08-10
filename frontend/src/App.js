@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react"
 import Budget from "./components/Budget"
 import BudgetForm from "./components/BudgetForm"
 import LoginForm from "./components/LoginForm"
+import RegisterForm from "./components/RegisterForm"
 import NumberFormat from "react-number-format"
 import PieChart from "./components/PieChart"
 import * as d3 from "d3"
 import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
 import loginService from "./services/login"
+import userService from "./services/user"
 
 function App() {
   const [budget, setBudget] = useState([])
@@ -15,13 +17,27 @@ function App() {
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [switchForm, setSwitchForm] = useState(false)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedbudgetappUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      budgetService.setToken(user.token)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user !== null) {
+      budgetService.setToken(user.token)
+      budgetService.getAll().then((initialBudget) => {
+        setBudget(initialBudget)
+      })
+    }
+  }, [user])
 
   //set budget to initial budget from DB
-  // useEffect(() => {
-  //   budgetService.getAll().then((initialBudget) => {
-  //     setBudget(initialBudget)
-  //   })
-  // }, [])
 
   //TODO: handlelogin and check if user logged in at start
 
@@ -47,24 +63,48 @@ function App() {
     }
   }
 
-  const loginForm = () => (
-    <LoginForm
-      username={username}
-      password={password}
-      handleUsernameChange={({ target }) => setUsername(target.value)}
-      handlePasswordChange={({ target }) => setPassword(target.value)}
-      handleSubmit={handleLogin}
-    />
-  )
+  const handleRegister = async (event) => {
+    event.preventDefault()
+    const user = await userService.register({
+      username,
+      password,
+    })
+    setUsername("")
+    setPassword("")
+  }
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedbudgetappUser")
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      budgetService.setToken(user.token)
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    localStorage.removeItem("loggedbudgetappUser")
+    setUser(null)
+    setBudget([])
+  }
+
+  const userForm = () => {
+    if (!switchForm) {
+      return (
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+          switchForm={() => setSwitchForm(!switchForm)}
+        />
+      )
+    } else {
+      return (
+        <RegisterForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleRegister}
+          switchForm={() => setSwitchForm(!switchForm)}
+        />
+      )
     }
-  }, [])
+  }
 
   const createBudgetItem = (budgetItem) => {
     //create budget item and add to database
@@ -121,59 +161,69 @@ function App() {
   //   console.log(totalPerType)
   // }, [totalPerType])
 
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+
+    return <div className="error">{message}</div>
+  }
+
   return (
     <div className="App">
+      <Notification message={errorMessage} />
       {user === null ? (
-        loginForm()
+        userForm()
       ) : (
-        <div>
-          <p>{user.name} logged in</p>
+        <div className="Budget">
+          <p>{user.username} logged in</p>
+          <button onClick={handleLogout}>Log out</button>
           <BudgetForm createBudgetItem={createBudgetItem} />
+          <div className="budgetItems">
+            {budget.map((budgetItem, i) => (
+              <Budget key={i} budget={budgetItem} />
+            ))}
+          </div>
+          <div className="BudgetTotals">
+            <span>
+              Total Income:
+              <NumberFormat
+                value={totalIncome}
+                displayType={"text"}
+                prefix={"$"}
+                thousandSeparator={true}
+              />
+            </span>
+            <br></br>
+            <span>
+              Total Expenses:
+              <NumberFormat
+                value={totalExpenses}
+                displayType={"text"}
+                prefix={"$"}
+                thousandSeparator={true}
+              />
+            </span>
+            <br></br>
+            <span>
+              Savings:
+              <NumberFormat
+                value={savings}
+                displayType={"text"}
+                prefix={"$"}
+                thousandSeparator={true}
+              />
+            </span>
+          </div>
+          <PieChart
+            data={totalPerType}
+            width={400}
+            height={400}
+            innerRadius={60}
+            outerRadius={100}
+          />
         </div>
       )}
-      <div className="budgetItems">
-        {budget.map((budgetItem, i) => (
-          <Budget key={i} budget={budgetItem} />
-        ))}
-      </div>
-      <div className="BudgetTotals">
-        <span>
-          Total Income:
-          <NumberFormat
-            value={totalIncome}
-            displayType={"text"}
-            prefix={"$"}
-            thousandSeparator={true}
-          />
-        </span>
-        <br></br>
-        <span>
-          Total Expenses:
-          <NumberFormat
-            value={totalExpenses}
-            displayType={"text"}
-            prefix={"$"}
-            thousandSeparator={true}
-          />
-        </span>
-        <br></br>
-        <span>
-          Savings:
-          <NumberFormat
-            value={savings}
-            displayType={"text"}
-            prefix={"$"}
-            thousandSeparator={true}
-          />
-        </span>
-      </div>
-      <PieChart
-        data={totalPerType}
-        width={400}
-        height={400}
-        innerRadius={60}
-        outerRadius={100}
-      />
     </div>
   )
 }

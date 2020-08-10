@@ -10,7 +10,11 @@ const setToken = (newToken) => {
 //Get budget associated with user
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const request = axios.get(baseUrl, config)
   return request.then((response) => response.data)
 }
 
