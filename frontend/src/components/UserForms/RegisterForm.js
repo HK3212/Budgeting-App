@@ -1,6 +1,7 @@
 //TODO: Add register form
 import React from "react"
 import PropTypes from "prop-types"
+import styles from "./UserForms.module.scss"
 
 const RegisterForm = ({
   handleSubmit,
@@ -11,34 +12,41 @@ const RegisterForm = ({
   switchForm,
 }) => {
   return (
-    <div>
+    <div className={styles.userform}>
       <h2>Register</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
-          Username
           <input
-            id="username"
+            placeholder="Username"
+            className={styles.input}
             value={username}
             onChange={handleUsernameChange}
           />
         </div>
+        <div className={styles.divbtn} />
         <div>
-          Password
           <input
-            id="password"
+            placeholder="Password"
+            className={styles.input}
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit" id="register-button">
+        <button type="submit" className={styles.btn} id="register-button">
           Register
         </button>
+        <div className={styles.divbtn} />
+        <button
+          onClick={switchForm}
+          className={styles.btn}
+          type="switch"
+          id="switch-button"
+        >
+          Back
+        </button>
       </form>
-      <button onClick={switchForm} type="switch" id="switch-button">
-        Back to Login
-      </button>
     </div>
   )
 }

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import "./App.scss"
 import Budget from "./components/Budget"
 import BudgetForm from "./components/BudgetForm"
-import LoginForm from "./components/LoginForm/LoginForm"
-import RegisterForm from "./components/RegisterForm"
+import LoginForm from "./components/UserForms/LoginForm"
+import RegisterForm from "./components/UserForms/RegisterForm"
 import NumberFormat from "react-number-format"
 import PieChart from "./components/PieChart"
 import * as d3 from "d3"
@@ -16,6 +16,8 @@ function App() {
   const [budget, setBudget] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [newUser, setNewUser] = useState("")
+  const [newPass, setNewPass] = useState("")
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [switchForm, setSwitchForm] = useState(false)
@@ -67,11 +69,11 @@ function App() {
   const handleRegister = async (event) => {
     event.preventDefault()
     const user = await userService.register({
-      username,
-      password,
+      newUser,
+      newPass,
     })
-    setUsername("")
-    setPassword("")
+    setNewUser("")
+    setNewPass("")
   }
 
   const handleLogout = async (event) => {
@@ -96,10 +98,10 @@ function App() {
     } else {
       return (
         <RegisterForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
+          username={newUser}
+          password={newPass}
+          handleUsernameChange={({ target }) => setNewUser(target.value)}
+          handlePasswordChange={({ target }) => setNewPass(target.value)}
           handleSubmit={handleRegister}
           switchForm={() => setSwitchForm(!switchForm)}
         />

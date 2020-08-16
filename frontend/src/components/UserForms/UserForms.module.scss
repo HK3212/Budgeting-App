@@ -19,11 +19,18 @@
   margin: 5px;
 }
 
-.loginform {
+.userform {
   height: 500px;
   width: 400px;
   position: absolute;
   left: 50%;
   top: 50%;
   margin: -250px 0 0 -200px;
+}
+
+.input {
+  border-style: none none solid none;
+  width: 300px;
+  height: 40px;
+  font-size: 16px;
 }

@@ -1,7 +1,7 @@
 //TODO: Add login/register form
 import React from "react"
 import PropTypes from "prop-types"
-import styles from "./LoginForm.module.scss"
+import styles from "./UserForms.module.scss"
 
 const LoginForm = ({
   handleSubmit,
@@ -12,23 +12,23 @@ const LoginForm = ({
   switchForm,
 }) => {
   return (
-    <div className={styles.loginform}>
+    <div className={styles.userform}>
       <h2>Budget Tracker</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
-          Username
           <input
             id="username"
+            placeholder="Username"
             className={styles.input}
             value={username}
             onChange={handleUsernameChange}
           />
         </div>
+        <div className={styles.divbtn} />
         <div>
-          Password
           <input
-            id="password"
+            placeholder="Password"
             className={styles.input}
             type="password"
             value={password}
