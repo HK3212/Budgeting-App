@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import "./App.scss"
-import Budget from "./components/Budget"
+import Budget from "./components/Budget/Budget"
 import BudgetForm from "./components/BudgetForm"
 import LoginForm from "./components/UserForms/LoginForm"
 import RegisterForm from "./components/UserForms/RegisterForm"
@@ -11,6 +11,7 @@ import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
 import loginService from "./services/login"
 import userService from "./services/user"
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 function App() {
   const [budget, setBudget] = useState([])
@@ -150,6 +151,14 @@ function App() {
 
   const savings = totalIncome - totalExpenses
 
+  var savingsClass = ""
+
+  if (savings >= 0) {
+    savingsClass = "positive"
+  } else {
+    savingsClass = "negative"
+  }
+
   //Total for each expense type
   //TODO: Add Savings to expense chart
   const totalPerType = d3arr
@@ -172,60 +181,80 @@ function App() {
     return <div className="error">{message}</div>
   }
 
+  const padding = { padding: 5 }
+
   return (
     <div className="App">
       <Notification message={errorMessage} />
       {user === null ? (
         userForm()
       ) : (
-        <div className="Budget">
-          <p>{user.username} logged in</p>
-          <button onClick={handleLogout}>Log out</button>
-          <BudgetForm createBudgetItem={createBudgetItem} />
-          <div className="budgetItems">
-            {budget.map((budgetItem, i) => (
-              <Budget key={i} budget={budgetItem} />
-            ))}
+        <Router>
+          <div className="navbar">
+            <Link style={padding} to="/">
+              Budget
+            </Link>
+            <Link style={padding} to="/goals">
+              Goals
+            </Link>
+            <div className="rightnav">
+              <p>{user.username} logged in</p>
+              <Link onClick={handleLogout}>Log out</Link>
+            </div>
           </div>
-          <div className="BudgetTotals">
-            <span>
-              Total Income:
-              <NumberFormat
-                value={totalIncome}
-                displayType={"text"}
-                prefix={"$"}
-                thousandSeparator={true}
-              />
-            </span>
-            <br></br>
-            <span>
-              Total Expenses:
-              <NumberFormat
-                value={totalExpenses}
-                displayType={"text"}
-                prefix={"$"}
-                thousandSeparator={true}
-              />
-            </span>
-            <br></br>
-            <span>
-              Savings:
-              <NumberFormat
-                value={savings}
-                displayType={"text"}
-                prefix={"$"}
-                thousandSeparator={true}
-              />
-            </span>
-          </div>
-          <PieChart
-            data={totalPerType}
-            width={400}
-            height={400}
-            innerRadius={60}
-            outerRadius={100}
-          />
-        </div>
+          <Switch>
+            <Route path="/goals"></Route>
+            <Route path="/">
+              <div className="budget">
+                <BudgetForm createBudgetItem={createBudgetItem} />
+                <div className="budgetItems">
+                  <Budget budget={budget} />
+                </div>
+                <div className="budgetTotals">
+                  <span>
+                    Total Income:
+                    <NumberFormat
+                      className="positive"
+                      value={totalIncome}
+                      displayType={"text"}
+                      prefix={"$"}
+                      thousandSeparator={true}
+                    />
+                  </span>
+                  <br></br>
+                  <span>
+                    Total Expenses:
+                    <NumberFormat
+                      className="negative"
+                      value={totalExpenses}
+                      displayType={"text"}
+                      prefix={"$"}
+                      thousandSeparator={true}
+                    />
+                  </span>
+                  <br></br>
+                  <span>
+                    Savings:
+                    <NumberFormat
+                      className={savingsClass}
+                      value={savings}
+                      displayType={"text"}
+                      prefix={"$"}
+                      thousandSeparator={true}
+                    />
+                  </span>
+                </div>
+                <PieChart
+                  data={totalPerType}
+                  width={400}
+                  height={400}
+                  innerRadius={60}
+                  outerRadius={100}
+                />
+              </div>
+            </Route>
+          </Switch>
+        </Router>
       )}
     </div>
   )

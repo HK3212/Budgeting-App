@@ -73,10 +73,21 @@ const BudgetForm = ({ createBudgetItem }) => {
           onChange={handleOption}
           options={groupedOptions}
           formatGroupLabel={formatGroupLabel}
+          placeholder="Category"
         />
       </div>
-      <input type="string" value={description} onChange={handleDescription} />
-      <input type="number" value={amount} onChange={handleAmount} />
+      <input
+        type="string"
+        placeholder="Description"
+        value={description}
+        onChange={handleDescription}
+      />
+      <input
+        type="number"
+        placeholder="Amount"
+        value={amount}
+        onChange={handleAmount}
+      />
       <button type="submit">add</button>
     </form>
   )
