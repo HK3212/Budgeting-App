@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import "./App.scss"
 import Budget from "./components/Budget/Budget"
-import BudgetForm from "./components/BudgetForm"
+import BudgetForm from "./components/BudgetForm/BudgetForm"
 import LoginForm from "./components/UserForms/LoginForm"
 import RegisterForm from "./components/UserForms/RegisterForm"
 import NumberFormat from "react-number-format"
@@ -191,12 +191,14 @@ function App() {
       ) : (
         <Router>
           <div className="navbar">
-            <Link style={padding} to="/">
-              Budget
-            </Link>
-            <Link style={padding} to="/goals">
-              Goals
-            </Link>
+            <div className="leftnav">
+              <Link style={padding} to="/">
+                Budget
+              </Link>
+              <Link style={padding} to="/goals">
+                Goals
+              </Link>
+            </div>
             <div className="rightnav">
               <p>{user.username} logged in</p>
               <Link onClick={handleLogout}>Log out</Link>

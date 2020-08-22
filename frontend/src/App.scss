@@ -15,13 +15,22 @@
 }
 
 .navbar {
-  display: inline;
+  display: inline-block;
+  margin-bottom: 10px;
+  flex-direction: row;
+  width: 100%;
+  overflow: hidden;
 }
 
 .link {
   padding: 5;
 }
 
+.leftnav {
+  float: left;
+}
+
 .rightnav {
-  text-align: right;
+  margin-top: -15px;
+  float: right;
 }

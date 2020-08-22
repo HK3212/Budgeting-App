@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
-import groupedOptions, { incomeOptions, expenseOptions } from "../data/options"
+import groupedOptions, { expenseOptions } from "../../data/options"
 import Select from "react-select"
+import styles from "./BudgetForm.module.scss"
 
 const BudgetForm = ({ createBudgetItem }) => {
   const [amount, setAmount] = useState("")
@@ -67,7 +68,7 @@ const BudgetForm = ({ createBudgetItem }) => {
   )
 
   return (
-    <form style={{ display: "flex" }} onSubmit={addBudgetItem}>
+    <form className={styles.form} onSubmit={addBudgetItem}>
       <div style={{ width: "200px" }}>
         <Select
           onChange={handleOption}
@@ -88,7 +89,9 @@ const BudgetForm = ({ createBudgetItem }) => {
         value={amount}
         onChange={handleAmount}
       />
-      <button type="submit">add</button>
+      <button type="submit" className={styles.btn}>
+        add
+      </button>
     </form>
   )
 }
