@@ -1,10 +1,11 @@
 import React from "react"
 import NumberFormat from "react-number-format"
 import styles from "./Budget.module.scss"
+import budgetService from "../../services/budget"
 
 //Display budget entries, negative values for expenses
 
-const Budget = ({ budget }) => {
+const Budget = ({ budget, removeBudgetItem }) => {
   const getMonth = (index) => {
     const months = [
       "January",
@@ -64,7 +65,12 @@ const Budget = ({ budget }) => {
               )}
               <td className={styles.options}>
                 <button className={styles.update}>Update</button>
-                <button className={styles.delete}>Delete</button>
+                <button
+                  className={styles.delete}
+                  onClick={() => removeBudgetItem(budgetItem.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>

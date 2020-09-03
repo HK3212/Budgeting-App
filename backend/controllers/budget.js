@@ -54,7 +54,7 @@ budgetRouter.post("/", async (request, response, next) => {
 
 //TODO: delete request to remove budget item
 budgetRouter.delete("/:id", async (request, response, next) => {
-  await Budget.findByIdAndRemove(request.params.id)
+  await BudgetItem.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
 

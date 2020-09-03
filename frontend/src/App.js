@@ -117,6 +117,12 @@ function App() {
     })
   }
 
+  const removeBudgetItem = (id) => {
+    budgetService.remove(id).then(() => {
+      setBudget(budget.filter((budgetItem) => budgetItem.id !== id))
+    })
+  }
+
   const incomeItems = budget
     .map((budgetItem) => {
       if (budgetItem.isIncome === true) {
@@ -210,7 +216,7 @@ function App() {
               <div className="budget">
                 <BudgetForm createBudgetItem={createBudgetItem} />
                 <div className="budgetItems">
-                  <Budget budget={budget} />
+                  <Budget budget={budget} removeBudgetItem={removeBudgetItem} />
                 </div>
                 <div className="budgetTotals">
                   <span>
