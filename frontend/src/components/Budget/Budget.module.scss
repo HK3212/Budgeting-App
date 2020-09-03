@@ -4,12 +4,47 @@
 
 .income {
   color: green;
+  text-align: right;
 }
 
 .expense {
   color: red;
+  text-align: right;
 }
 
 h2 {
   text-align: center;
+}
+
+button {
+  width: 70px;
+  height: 40px;
+  font-size: 18px;
+  border-radius: 5px;
+  //margin-left: 20px;
+  background: #0b8c14;
+  color: white;
+  border: none;
+  //display: inline-block;
+
+  &:hover {
+    background: #109e1a;
+  }
+}
+
+.options {
+}
+
+.update {
+  margin: 5px;
+}
+
+//Red colour for delete
+.delete {
+  margin: 5px;
+  background: #a72e0f;
+
+  &:hover {
+    background: #c43a28;
+  }
 }

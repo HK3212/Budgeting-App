@@ -23,6 +23,8 @@ const Budget = ({ budget }) => {
     return months[index]
   }
 
+  //add onClick function for handling delete (get id from budgetItem.id)
+
   const date = new Date()
   const currMonth = getMonth(date.getMonth())
   return (
@@ -33,14 +35,14 @@ const Budget = ({ budget }) => {
           <tr>
             <th align="left">Category</th>
             <th align="left">Description</th>
-            <th align="left">Amount</th>
+            <th align="right">Amount</th>
           </tr>
         </thead>
         {budget.map((budgetItem, i) => (
           <tbody>
             <tr>
-              <td>{budgetItem.type}</td>
-              <td>{budgetItem.description}</td>
+              <td className={styles.type}>{budgetItem.type}</td>
+              <td className={styles.description}>{budgetItem.description}</td>
               {budgetItem.isIncome === true ? (
                 <td className={styles.income}>
                   <NumberFormat
@@ -60,6 +62,10 @@ const Budget = ({ budget }) => {
                   />
                 </td>
               )}
+              <td className={styles.options}>
+                <button className={styles.update}>Update</button>
+                <button className={styles.delete}>Delete</button>
+              </td>
             </tr>
           </tbody>
         ))}

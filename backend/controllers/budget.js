@@ -11,7 +11,7 @@ const getTokenFrom = (request) => {
   return null
 }
 
-//TODO: get request to retrieve budget items
+//get request to retrieve budget items
 
 budgetRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
@@ -25,7 +25,7 @@ budgetRouter.get("/", async (request, response) => {
   response.json(budget.map((budgetItem) => budgetItem.toJSON()))
 })
 
-//TODO: post request to save new budget item
+//post request to save new budget item
 budgetRouter.post("/", async (request, response, next) => {
   const body = request.body
   const token = getTokenFrom(request)
@@ -53,6 +53,10 @@ budgetRouter.post("/", async (request, response, next) => {
 })
 
 //TODO: delete request to remove budget item
+budgetRouter.delete("/:id", async (request, response, next) => {
+  await Budget.findByIdAndRemove(request.params.id)
+  response.status(204).end()
+})
 
 //TODO: put request to update budget item
 
