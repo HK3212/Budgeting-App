@@ -12,7 +12,8 @@ const PieChart = (props) => {
     .innerRadius(props.innerRadius)
     .outerRadius(props.outerRadius)
   const colors = d3.scaleOrdinal(d3.schemeCategory10)
-  const format = d3.format(".2f")
+  //Format legend values as "$num" with no decimals
+  const format = d3.format("($.0f")
 
   useEffect(() => {
     const data = createPie(props.data)

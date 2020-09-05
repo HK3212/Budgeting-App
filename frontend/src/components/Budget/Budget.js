@@ -43,9 +43,11 @@ const Budget = ({ budget, removeBudgetItem }) => {
           <tbody>
             <tr>
               <td className={styles.type}>{budgetItem.type}</td>
-              <td className={styles.description}>{budgetItem.description}</td>
+              <td contenteditable="true" className={styles.description}>
+                {budgetItem.description}
+              </td>
               {budgetItem.isIncome === true ? (
-                <td className={styles.income}>
+                <td contenteditable="true" className={styles.income}>
                   <NumberFormat
                     value={budgetItem.value}
                     displayType={"text"}
@@ -54,7 +56,7 @@ const Budget = ({ budget, removeBudgetItem }) => {
                   />
                 </td>
               ) : (
-                <td className={styles.expense}>
+                <td contenteditable="true" className={styles.expense}>
                   <NumberFormat
                     value={budgetItem.value}
                     displayType={"text"}
@@ -64,7 +66,12 @@ const Budget = ({ budget, removeBudgetItem }) => {
                 </td>
               )}
               <td className={styles.options}>
-                <button className={styles.update}>Update</button>
+                <button
+                  className={styles.update}
+                  //onClick={() => updateBudgetItem()}
+                >
+                  Update
+                </button>
                 <button
                   className={styles.delete}
                   onClick={() => removeBudgetItem(budgetItem.id)}

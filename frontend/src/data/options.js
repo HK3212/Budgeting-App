@@ -12,6 +12,7 @@ export const expenseOptions = [
   { value: "groceries", label: "Groceries" },
   { value: "dining", label: "Dining" },
   { value: "transportation", label: "Transportation" },
+  { value: "housing", label: "Housing" },
   { value: "education", label: "Education" },
   { value: "entertainment", label: "Entertainment" },
   { value: "clothing", label: "Clothing" },
