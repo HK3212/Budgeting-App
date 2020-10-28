@@ -82,12 +82,14 @@ const BudgetForm = ({ createBudgetItem }) => {
         placeholder="Description"
         value={description}
         onChange={handleDescription}
+        className={styles.forminput}
       />
       <input
         type="number"
         placeholder="Amount"
         value={amount}
         onChange={handleAmount}
+        className={styles.forminput}
       />
       <button type="submit" className={styles.btn}>
         add

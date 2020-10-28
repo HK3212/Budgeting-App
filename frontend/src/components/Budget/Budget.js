@@ -1,7 +1,6 @@
 import React from "react"
 import NumberFormat from "react-number-format"
 import styles from "./Budget.module.scss"
-import budgetService from "../../services/budget"
 
 //Display budget entries, negative values for expenses
 
@@ -43,11 +42,9 @@ const Budget = ({ budget, removeBudgetItem }) => {
           <tbody>
             <tr>
               <td className={styles.type}>{budgetItem.type}</td>
-              <td contenteditable="true" className={styles.description}>
-                {budgetItem.description}
-              </td>
+              <td className={styles.description}>{budgetItem.description}</td>
               {budgetItem.isIncome === true ? (
-                <td contenteditable="true" className={styles.income}>
+                <td className={styles.income}>
                   <NumberFormat
                     value={budgetItem.value}
                     displayType={"text"}
@@ -56,7 +53,7 @@ const Budget = ({ budget, removeBudgetItem }) => {
                   />
                 </td>
               ) : (
-                <td contenteditable="true" className={styles.expense}>
+                <td className={styles.expense}>
                   <NumberFormat
                     value={budgetItem.value}
                     displayType={"text"}
@@ -66,12 +63,6 @@ const Budget = ({ budget, removeBudgetItem }) => {
                 </td>
               )}
               <td className={styles.options}>
-                <button
-                  className={styles.update}
-                  //onClick={() => updateBudgetItem()}
-                >
-                  Update
-                </button>
                 <button
                   className={styles.delete}
                   onClick={() => removeBudgetItem(budgetItem.id)}

@@ -5,7 +5,8 @@ import BudgetForm from "./components/BudgetForm/BudgetForm"
 import LoginForm from "./components/UserForms/LoginForm"
 import RegisterForm from "./components/UserForms/RegisterForm"
 import NumberFormat from "react-number-format"
-import PieChart from "./components/PieChart"
+import PieChart from "./components/PieChart/PieChart"
+import SpendingGoals from "./components/SpendingGoals/SpendingGoals"
 import * as d3 from "d3"
 import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
@@ -33,6 +34,7 @@ function App() {
   }, [])
 
   useEffect(() => {
+    //set budget to initial budget from DB if user is logged in
     if (user !== null) {
       budgetService.setToken(user.token)
       budgetService.getAll().then((initialBudget) => {
@@ -41,10 +43,7 @@ function App() {
     }
   }, [user])
 
-  //set budget to initial budget from DB
-
-  //TODO: handlelogin and check if user logged in at start
-
+  //check if user logged in at start
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -187,8 +186,6 @@ function App() {
     return <div className="error">{message}</div>
   }
 
-  const padding = { padding: 5 }
-
   return (
     <div className="App">
       <Notification message={errorMessage} />
@@ -198,20 +195,24 @@ function App() {
         <Router>
           <div className="navbar">
             <div className="leftnav">
-              <Link style={padding} to="/">
+              <Link className="navitem" to="/">
                 Budget
               </Link>
-              <Link style={padding} to="/goals">
+              <Link className="navitem" to="/goals">
                 Goals
               </Link>
             </div>
             <div className="rightnav">
-              <p>{user.username} logged in</p>
-              <Link onClick={handleLogout}>Log out</Link>
+              {user.username} logged in
+              <Link className="navitem" onClick={handleLogout}>
+                Log out
+              </Link>
             </div>
           </div>
           <Switch>
-            <Route path="/goals"></Route>
+            <Route path="/goals">
+              <SpendingGoals />
+            </Route>
             <Route path="/">
               <div className="budget">
                 <BudgetForm createBudgetItem={createBudgetItem} />

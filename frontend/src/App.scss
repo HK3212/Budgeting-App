@@ -1,5 +1,13 @@
-.App {
-  font-family: "Helvetica";
+@import "./Variables.scss";
+
+// * {
+//   background-color: black;
+//   color: white;
+// }
+
+body {
+  font-family: $font-stack;
+  background-color: #d1d1d1b2;
 }
 
 .positive {
@@ -14,23 +22,14 @@
   margin: 20px 20px 20px 0;
 }
 
+//flex display
 .navbar {
-  display: inline-block;
-  margin-bottom: 10px;
-  flex-direction: row;
-  width: 100%;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
 }
 
-.link {
-  padding: 5;
-}
-
-.leftnav {
-  float: left;
-}
-
-.rightnav {
-  margin-top: -15px;
-  float: right;
+.navitem {
+  padding: 5px;
 }

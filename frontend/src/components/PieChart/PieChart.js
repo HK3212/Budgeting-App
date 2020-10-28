@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react"
+import styles from "./PieChart.module.scss"
 import * as d3 from "d3"
 
 const PieChart = (props) => {
@@ -36,18 +37,6 @@ const PieChart = (props) => {
       .attr("d", createArc)
       .attr("fill", (d, i) => colors(i))
 
-    // const text = groupWithUpdate
-    //   .append("text")
-    //   .merge(groupWithData.select("text"))
-
-    // text
-    //   .attr("text-anchor", "middle")
-    //   .attr("alignment-baseline", "middle")
-    //   .attr("transform", (d) => `translate(${createArc.centroid(d)})`)
-    //   .style("fill", "white")
-    //   .style("font-size", 14)
-    //   .text((d) => d.data.type + ": " + format(d.value))
-
     const legendGroup = groupWithUpdate
       .append("text")
       .merge(groupWithData.select("text"))
@@ -57,13 +46,6 @@ const PieChart = (props) => {
       )
       .attr("class", "legend")
 
-    // legendGroup
-    //   .append("rect") //Color rect for legend
-    //   .attr("width", 15)
-    //   .attr("height", 15)
-    //   .attr("alignment-baseline", "middle")
-    //   .attr("fill", (d, i) => colors(i))
-
     legendGroup
       .text((d) => d.data.type + ": " + format(d.value))
       .style("font-size", 18)
@@ -71,12 +53,15 @@ const PieChart = (props) => {
   }, [colors, createArc, createPie, format, props.data, props.width])
 
   return (
-    <svg width={props.width} height={props.height}>
-      <g
-        ref={ref}
-        transform={`translate(${props.outerRadius} ${props.outerRadius})`}
-      />
-    </svg>
+    <div className="expchart">
+      <h2 className={styles.expheader}>Expenses by Category</h2>
+      <svg width={props.width} height={props.height}>
+        <g
+          ref={ref}
+          transform={`translate(${props.outerRadius} ${props.outerRadius})`}
+        />
+      </svg>
+    </div>
   )
 }
 

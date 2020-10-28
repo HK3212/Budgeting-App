@@ -11,17 +11,28 @@ const getTokenFrom = (request) => {
   return null
 }
 
+const getYearMonth = () => {
+  const dateObj = new Date()
+  const month = dateObj.getUTCMonth()
+  const year = dateObj.getUTCFullYear()
+  const yearMonth = year + "/" + month
+
+  return yearMonth
+}
+
 //get request to retrieve budget items
 
 budgetRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   const loggedUser = await User.findById(decodedToken.id)
+  const yearMonth = getYearMonth()
+
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid"})
   }
 
-  const budget = await BudgetItem.find({ user: loggedUser }).populate('user', { username: 1, name: 1 })
+  const budget = await BudgetItem.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(budget.map((budgetItem) => budgetItem.toJSON()))
 })
 
@@ -30,6 +41,8 @@ budgetRouter.post("/", async (request, response, next) => {
   const body = request.body
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
+  const yearMonth = getYearMonth()
+
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid"})
   }
@@ -41,7 +54,7 @@ budgetRouter.post("/", async (request, response, next) => {
     description: body.description,
     isIncome: body.isIncome,
     value: body.value,
-    date: new Date(),
+    date: yearMonth,
     user: user._id
   })
 
