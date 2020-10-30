@@ -8,13 +8,6 @@ const BudgetForm = ({ createBudgetItem }) => {
   const [description, setDescription] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
 
-  //Using for console log after new renders
-  // useEffect(() => {
-  //   console.log(selectedOption)
-  //   console.log(amount)
-  //   console.log(description)
-  // }, [amount, description, selectedOption])
-
   const handleAmount = (event) => {
     setAmount(event.target.value)
   }

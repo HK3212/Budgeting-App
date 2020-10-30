@@ -174,9 +174,9 @@ function App() {
     )
     .map(([type, value]) => ({ type: type, value: value }))
 
-  // useEffect(() => {
-  //   console.log(totalPerType)
-  // }, [totalPerType])
+  useEffect(() => {
+    console.log(totalPerType)
+  }, [totalPerType])
 
   const Notification = ({ message }) => {
     if (message === null) {
@@ -185,6 +185,27 @@ function App() {
 
     return <div className="error">{message}</div>
   }
+
+  const getMonth = (index) => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ]
+    return months[index]
+  }
+
+  const date = new Date()
+  const currMonth = getMonth(date.getMonth())
 
   return (
     <div className="App">
@@ -211,10 +232,14 @@ function App() {
           </div>
           <Switch>
             <Route path="/goals">
-              <SpendingGoals />
+              <SpendingGoals totalPerType={totalPerType} />
             </Route>
             <Route path="/">
               <div className="budget">
+                <h1 className="title">Monthly Budget</h1>
+                <h2 className="currMonth">
+                  {currMonth + " " + date.getFullYear()}
+                </h2>
                 <BudgetForm createBudgetItem={createBudgetItem} />
                 <div className="budgetItems">
                   <Budget budget={budget} removeBudgetItem={removeBudgetItem} />

@@ -28,17 +28,24 @@
   margin: -250px 0 0 -200px;
 }
 
+.buttons {
+  padding-top: 15px;
+}
+
 .input {
   border-style: none none solid none;
+  background-color: #dedede;
+  border-color: black;
   width: 300px;
   height: 40px;
   font-size: 16px;
+  padding-top: 20px;
 
   &:focus {
     outline-style: none;
   }
 
   &:focus::placeholder {
-    opacity: 0.5;
+    opacity: 0.2;
   }
 }

@@ -13,7 +13,7 @@ const LoginForm = ({
 }) => {
   return (
     <div className={styles.userform}>
-      <h2>Budget Tracker</h2>
+      <h2 className={styles.title}>Budget Tracker</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -35,13 +35,15 @@ const LoginForm = ({
             onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit" className={styles.btn}>
-          Login
-        </button>
-        <div className={styles.divbtn} />
-        <button onClick={switchForm} type="switch" className={styles.btn}>
-          Register
-        </button>
+        <div className={styles.buttons}>
+          <button type="submit" className={styles.btn}>
+            Login
+          </button>
+          <div className={styles.divbtn} />
+          <button onClick={switchForm} type="switch" className={styles.btn}>
+            Register
+          </button>
+        </div>
       </form>
     </div>
   )

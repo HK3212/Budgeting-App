@@ -34,18 +34,20 @@ const RegisterForm = ({
             onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit" className={styles.btn} id="register-button">
-          Register
-        </button>
-        <div className={styles.divbtn} />
-        <button
-          onClick={switchForm}
-          className={styles.btn}
-          type="switch"
-          id="switch-button"
-        >
-          Back
-        </button>
+        <div className={styles.buttons}>
+          <button type="submit" className={styles.btn} id="register-button">
+            Register
+          </button>
+          <div className={styles.divbtn} />
+          <button
+            onClick={switchForm}
+            className={styles.btn}
+            type="switch"
+            id="switch-button"
+          >
+            Back
+          </button>
+        </div>
       </form>
     </div>
   )

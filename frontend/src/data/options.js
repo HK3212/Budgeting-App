@@ -13,18 +13,35 @@ export const expenseOptions = [
   { value: "dining", label: "Dining" },
   { value: "transportation", label: "Transportation" },
   { value: "housing", label: "Housing" },
+  { value: "utilities", label: "Utilities" },
   { value: "education", label: "Education" },
   { value: "entertainment", label: "Entertainment" },
   { value: "clothing", label: "Clothing" },
-  { value: "travel", label: "Travel" },
   { value: "health", label: "Health" },
+  { value: "debt", label: "Debt" },
+  { value: "investment", label: "Investment" },
+  { value: "insurance", label: "Insurance" },
+  { value: "personal", label: "Personal" },
 ]
+
+export const goalsOptions = [{ value: "total", label: "Monthly Total" }]
 
 const groupedOptions = [
   {
     label: "Income",
     options: incomeOptions,
     color: "green",
+  },
+  {
+    label: "Expenses",
+    options: expenseOptions,
+  },
+]
+
+export const groupedGoalsOptions = [
+  {
+    label: "Total",
+    options: goalsOptions,
   },
   {
     label: "Expenses",

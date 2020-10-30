@@ -5,31 +5,8 @@ import styles from "./Budget.module.scss"
 //Display budget entries, negative values for expenses
 
 const Budget = ({ budget, removeBudgetItem }) => {
-  const getMonth = (index) => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]
-    return months[index]
-  }
-
-  //add onClick function for handling delete (get id from budgetItem.id)
-
-  const date = new Date()
-  const currMonth = getMonth(date.getMonth())
   return (
     <div className={styles.budget}>
-      <h2>{currMonth + " " + date.getFullYear()}</h2>
       <table className={styles.budgetItems}>
         <thead>
           <tr>
