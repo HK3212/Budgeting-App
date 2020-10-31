@@ -4,6 +4,7 @@ import Notification from "../Notification/Notification"
 import { groupedGoalsOptions } from "../../data/options"
 import Select from "react-select"
 import styles from "./SpendingGoals.module.scss"
+import goalsService from "../../services/goals"
 
 const SpendingGoals = ({ totalPerType, totalExpenses }) => {
   const [errorMessage, setErrorMessage] = useState("")
@@ -21,41 +22,38 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
 
   const addSpendingGoal = (event) => {
     event.preventDefault()
-
-    // if ((selectedOption = "Monthly Total")) {
-    //   const totalByCategory = totalExpenses
-    // } else {
-    //   const totalByCategory = totalPerType.find(
-    //     (expense) => expense.type === selectedOption
-    //   ).type
-    // }
     try {
-      const totalByCategory = totalPerType.find(
-        (expense) => expense.type === selectedOption
-      ).value
-
-      if ((selectedOption = "Monthly Total")) {
-        const newGoal = {
-          type: selectedOption,
-          total: totalByCategory,
-          maxGoal: maxValue,
-        }
+      var totalByCategory = ""
+      if (selectedOption === "Monthly Total") {
+        totalByCategory = totalExpenses
       } else {
-        const newGoal = {
-          type: selectedOption,
-          total: totalExpenses,
-          maxGoal: maxValue,
-        }
+        totalByCategory = totalPerType.find(
+          (expense) => expense.type === selectedOption
+        ).value
       }
+
+      const percentTowardsGoal = (totalByCategory / maxValue) * 100
+      const newGoal = {
+        category: selectedOption,
+        total: totalByCategory,
+        maxGoal: maxValue,
+        percentTowardsGoal: percentTowardsGoal,
+      }
+      goalsService.create(newGoal).then((returnedItem) => {
+        setGoals(goals.concat(returnedItem))
+      })
     } catch (exception) {
-      setErrorMessage("No budget entries for " + selectedOption)
+      if (selectedOption === "") {
+        setErrorMessage("Please select a category")
+      } else {
+        setErrorMessage("No budget entries for " + selectedOption)
+      }
       setTimeout(() => {
         setErrorMessage(null)
       }, 3000)
     }
+    setMaxValue("")
   }
-
-  //setMaxValue("")
 
   //TODO: Add Spending Goal to Database
 

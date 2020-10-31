@@ -13,6 +13,7 @@ import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
 import loginService from "./services/login"
 import userService from "./services/user"
+import goalsService from "./services/goals"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       budgetService.setToken(user.token)
+      goalsService.setToken(user.token)
     }
   }, [])
 
@@ -38,6 +40,7 @@ function App() {
     //set budget to initial budget from DB if user is logged in
     if (user !== null) {
       budgetService.setToken(user.token)
+      goalsService.setToken(user.token)
       budgetService.getAll().then((initialBudget) => {
         setBudget(initialBudget)
       })
@@ -56,6 +59,7 @@ function App() {
       window.localStorage.setItem("loggedbudgetappUser", JSON.stringify(user))
 
       budgetService.setToken(user.token)
+      goalsService.setToken(user.token)
       setUser(user)
       setUsername("")
       setPassword("")

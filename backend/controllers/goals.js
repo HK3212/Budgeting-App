@@ -1,5 +1,5 @@
-const budgetRouter = require("express").Router()
-const BudgetItem = require("../models/budgetItem")
+const goalsRouter = require("express").Router()
+const Goal = require("../models/goal")
 const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 
@@ -20,24 +20,24 @@ const getYearMonth = () => {
   return yearMonth
 }
 
-//get request to retrieve budget items
-
-budgetRouter.get("/", async (request, response) => {
+//TODO: get request for retreiving spending goals
+goalsRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
-  const loggedUser = await User.findById(decodedToken.id)
   const yearMonth = getYearMonth()
+
+  const loggedUser = await User.findById(decodedToken.id)
 
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid"})
   }
 
-  const budget = await BudgetItem.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
-  response.json(budget.map((budgetItem) => budgetItem.toJSON()))
+  const goals = await Goal.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
+  response.json(goals.map((goal) => goal.toJSON()))
 })
 
-//post request to save new budget item
-budgetRouter.post("/", async (request, response, next) => {
+//TODO: post request to create new spending goal
+goalsRouter.post("/", async (request, response) => {
   const body = request.body
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -49,26 +49,24 @@ budgetRouter.post("/", async (request, response, next) => {
 
   const user = await User.findById(decodedToken.id)
 
-  const budgetItem = new BudgetItem({
-    type: body.type,
-    description: body.description,
-    isIncome: body.isIncome,
-    value: body.value,
+  const goal = new Goal({
+    category: body.category,
+    total: body.total,
+    maxGoal: body.maxGoal,
+    percentTowardsGoal: body.percentTowardsGoal,
     date: yearMonth,
     user: user._id
   })
 
-  const savedBudgetItem = await budgetItem.save()
+  const savedGoal = await goal.save()
 
-  response.json(savedBudgetItem.toJSON())
+  response.json(savedGoal.toJSON())
 })
 
-//TODO: delete request to remove budget item
-budgetRouter.delete("/:id", async (request, response, next) => {
-  await BudgetItem.findByIdAndRemove(request.params.id)
+//TODO: delete request to remove spending goal
+goalsRouter.delete("/:id", async (request, response, next) => {
+  await Goal.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
 
-//TODO: put request to update budget item
-
-module.exports = budgetRouter
+module.exports = goalsRouter
