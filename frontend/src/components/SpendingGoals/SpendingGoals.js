@@ -1,10 +1,13 @@
 import React, { useState } from "react"
 import NumberFormat from "react-number-format"
+import Notification from "../Notification/Notification"
 import { groupedGoalsOptions } from "../../data/options"
 import Select from "react-select"
 import styles from "./SpendingGoals.module.scss"
 
-const SpendingGoals = ({ totalPerType }) => {
+const SpendingGoals = ({ totalPerType, totalExpenses }) => {
+  const [errorMessage, setErrorMessage] = useState("")
+  const [goals, setGoals] = useState([])
   const [maxValue, setMaxValue] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
 
@@ -19,8 +22,42 @@ const SpendingGoals = ({ totalPerType }) => {
   const addSpendingGoal = (event) => {
     event.preventDefault()
 
-    //TODO: Add Spending Goal to Database
+    // if ((selectedOption = "Monthly Total")) {
+    //   const totalByCategory = totalExpenses
+    // } else {
+    //   const totalByCategory = totalPerType.find(
+    //     (expense) => expense.type === selectedOption
+    //   ).type
+    // }
+    try {
+      const totalByCategory = totalPerType.find(
+        (expense) => expense.type === selectedOption
+      ).value
+
+      if ((selectedOption = "Monthly Total")) {
+        const newGoal = {
+          type: selectedOption,
+          total: totalByCategory,
+          maxGoal: maxValue,
+        }
+      } else {
+        const newGoal = {
+          type: selectedOption,
+          total: totalExpenses,
+          maxGoal: maxValue,
+        }
+      }
+    } catch (exception) {
+      setErrorMessage("No budget entries for " + selectedOption)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
   }
+
+  //setMaxValue("")
+
+  //TODO: Add Spending Goal to Database
 
   const getMonth = (index) => {
     const months = [
@@ -59,6 +96,7 @@ const SpendingGoals = ({ totalPerType }) => {
 
   return (
     <div className={styles.goals}>
+      <Notification message={errorMessage} />
       <h1 className={styles.title}>Spending Goals</h1>
       <h2 className={styles.currMonth}>
         {currMonth + " " + date.getFullYear()}

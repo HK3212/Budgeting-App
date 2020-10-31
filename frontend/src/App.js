@@ -7,6 +7,7 @@ import RegisterForm from "./components/UserForms/RegisterForm"
 import NumberFormat from "react-number-format"
 import PieChart from "./components/PieChart/PieChart"
 import SpendingGoals from "./components/SpendingGoals/SpendingGoals"
+import Notification from "./components/Notification/Notification"
 import * as d3 from "d3"
 import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
@@ -62,7 +63,7 @@ function App() {
       setErrorMessage("wrong credentials")
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
     }
   }
 
@@ -178,14 +179,6 @@ function App() {
     console.log(totalPerType)
   }, [totalPerType])
 
-  const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-
-    return <div className="error">{message}</div>
-  }
-
   const getMonth = (index) => {
     const months = [
       "January",
@@ -232,7 +225,10 @@ function App() {
           </div>
           <Switch>
             <Route path="/goals">
-              <SpendingGoals totalPerType={totalPerType} />
+              <SpendingGoals
+                totalPerType={totalPerType}
+                totalExpenses={totalExpenses}
+              />
             </Route>
             <Route path="/">
               <div className="budget">
