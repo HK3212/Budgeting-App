@@ -20,6 +20,10 @@ const goalSchema = new mongoose.Schema({
   percentTowardsGoal: {
     type: Number,
   },
+  date: {
+    type: String,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

@@ -24,6 +24,7 @@ const getYearMonth = () => {
 goalsRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
+
   const yearMonth = getYearMonth()
 
   const loggedUser = await User.findById(decodedToken.id)
@@ -31,6 +32,9 @@ goalsRouter.get("/", async (request, response) => {
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid"})
   }
+
+  //Remove goal entries before current month
+  await Goal.remove({ date: { "$ne": yearMonth } })
 
   const goals = await Goal.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(goals.map((goal) => goal.toJSON()))

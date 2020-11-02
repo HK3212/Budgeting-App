@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import NumberFormat from "react-number-format"
 import Notification from "../Notification/Notification"
 import { groupedGoalsOptions } from "../../data/options"
@@ -11,6 +11,13 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
   const [goals, setGoals] = useState([])
   const [maxValue, setMaxValue] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
+
+  useEffect(() => {
+    //set spending goals to initial goals from DB
+    goalsService.getAll().then((initialGoals) => {
+      setGoals(initialGoals)
+    })
+  }, [])
 
   const handleOption = (event) => {
     setSelectedOption(event.label)
@@ -93,16 +100,18 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
   )
 
   return (
-    <div className={styles.goals}>
-      <Notification message={errorMessage} />
-      <h1 className={styles.title}>Spending Goals</h1>
-      <h2 className={styles.currMonth}>
-        {currMonth + " " + date.getFullYear()}
-      </h2>
-      <h4>
-        Enter a maximum spending amount for your total monthly budget or a
-        specific category.
-      </h4>
+    <div className={styles.goalsPage}>
+      <div className={styles.headings}>
+        <Notification message={errorMessage} />
+        <h1 className={styles.title}>Spending Goals</h1>
+        <h2 className={styles.currMonth}>
+          {currMonth + " " + date.getFullYear()}
+        </h2>
+        <h4>
+          Enter a maximum spending amount for your total monthly budget or a
+          specific category.
+        </h4>
+      </div>
       <form className={styles.form} onSubmit={addSpendingGoal}>
         <div style={{ width: "200px" }}>
           <Select

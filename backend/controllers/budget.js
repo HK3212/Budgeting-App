@@ -26,12 +26,16 @@ budgetRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   const loggedUser = await User.findById(decodedToken.id)
+
   const yearMonth = getYearMonth()
 
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid"})
   }
 
+  //Remove budget entries before current month
+  await BudgetItem.remove({ date: { "$ne": yearMonth } })
+  
   const budget = await BudgetItem.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(budget.map((budgetItem) => budgetItem.toJSON()))
 })
