@@ -55,9 +55,7 @@ goalsRouter.post("/", async (request, response) => {
 
   const goal = new Goal({
     category: body.category,
-    total: body.total,
     maxGoal: body.maxGoal,
-    percentTowardsGoal: body.percentTowardsGoal,
     date: yearMonth,
     user: user._id
   })

@@ -1,5 +1,15 @@
+$goal-width: 75%;
+
 .form {
   display: inline-flex;
+  padding-bottom: 20px;
+}
+
+.forminput {
+  border-radius: 5px;
+  border-color: #cccccc;
+  border-block-color: #cccccc;
+  padding-left: 5px;
 }
 
 .title {
@@ -13,4 +23,73 @@
 h4 {
   padding-top: 25px;
   padding-bottom: 20px;
+}
+
+.goals {
+  display: flex;
+  flex-direction: column;
+}
+
+.goals > * {
+  margin: 25px;
+}
+
+.goalLabels {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: $goal-width;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: large;
+}
+
+.progressbar {
+  position: relative;
+  width: $goal-width;
+  height: 3em;
+  background-color: #686868;
+  border-radius: 0.5em;
+  color: #fff;
+  font-weight: bold;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
+  margin-right: 10px;
+}
+
+.progressbar::before {
+  content: attr(data-label);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: calc(var(--width, 0) * 1%);
+  min-width: 2rem;
+  max-width: calc(100% - 2em);
+  background-color: var(--bar-color, 0);
+  border-radius: 0.5em;
+  padding: 1em;
+}
+
+button {
+  width: 70px;
+  height: 40px;
+  font-size: 18px;
+  border-radius: 5px;
+  color: white;
+  border: none;
+}
+
+.update {
+  margin: 5px;
+}
+
+//Red colour for delete
+.delete {
+  margin: 5px;
+  background: #a72e0f;
+
+  &:hover {
+    background: #c43a28;
+  }
 }

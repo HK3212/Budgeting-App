@@ -203,6 +203,7 @@ function App() {
 
   const date = new Date()
   const currMonth = getMonth(date.getMonth())
+  const currYear = date.getFullYear()
 
   return (
     <div className="App">
@@ -232,14 +233,14 @@ function App() {
               <SpendingGoals
                 totalPerType={totalPerType}
                 totalExpenses={totalExpenses}
+                currMonth={currMonth}
+                currYear={currYear}
               />
             </Route>
             <Route path="/">
               <div className="budget">
                 <h1 className="title">Monthly Budget</h1>
-                <h2 className="currMonth">
-                  {currMonth + " " + date.getFullYear()}
-                </h2>
+                <h2 className="currMonth">{currMonth + " " + currYear}</h2>
                 <BudgetForm createBudgetItem={createBudgetItem} />
                 <div className="budgetItems">
                   <Budget budget={budget} removeBudgetItem={removeBudgetItem} />

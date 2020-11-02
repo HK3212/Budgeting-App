@@ -9,16 +9,9 @@ const goalSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  total: {
-    type: Number,
-    required: true,
-  },
   maxGoal: {
     type: Number,
     required: true,
-  },
-  percentTowardsGoal: {
-    type: Number,
   },
   date: {
     type: String,

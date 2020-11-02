@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react"
-import NumberFormat from "react-number-format"
 import Notification from "../Notification/Notification"
 import { groupedGoalsOptions } from "../../data/options"
 import Select from "react-select"
 import styles from "./SpendingGoals.module.scss"
 import goalsService from "../../services/goals"
 
-const SpendingGoals = ({ totalPerType, totalExpenses }) => {
+const SpendingGoals = ({
+  totalPerType,
+  totalExpenses,
+  currMonth,
+  currYear,
+}) => {
   const [errorMessage, setErrorMessage] = useState("")
   const [goals, setGoals] = useState([])
   const [maxValue, setMaxValue] = useState("")
@@ -30,21 +34,14 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
   const addSpendingGoal = (event) => {
     event.preventDefault()
     try {
-      var totalByCategory = ""
-      if (selectedOption === "Monthly Total") {
-        totalByCategory = totalExpenses
-      } else {
-        totalByCategory = totalPerType.find(
-          (expense) => expense.type === selectedOption
-        ).value
+      //Check if there are any budget entries for category
+      if (selectedOption !== "Monthly Total") {
+        totalPerType.find((expense) => expense.type === selectedOption)
       }
 
-      const percentTowardsGoal = (totalByCategory / maxValue) * 100
       const newGoal = {
         category: selectedOption,
-        total: totalByCategory,
         maxGoal: maxValue,
-        percentTowardsGoal: percentTowardsGoal,
       }
       goalsService.create(newGoal).then((returnedItem) => {
         setGoals(goals.concat(returnedItem))
@@ -62,24 +59,10 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
     setMaxValue("")
   }
 
-  //TODO: Add Spending Goal to Database
-
-  const getMonth = (index) => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]
-    return months[index]
+  const removeGoal = (id) => {
+    goalsService.remove(id).then(() => {
+      setGoals(goals.filter((goalItem) => goalItem.id !== id))
+    })
   }
 
   //Styling for dropdown
@@ -88,9 +71,6 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
     alignItems: "center",
     justifyContent: "space-between",
   }
-
-  const date = new Date()
-  const currMonth = getMonth(date.getMonth())
 
   const formatGroupLabel = (data) => (
     <div style={groupStyles}>
@@ -104,9 +84,7 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
       <div className={styles.headings}>
         <Notification message={errorMessage} />
         <h1 className={styles.title}>Spending Goals</h1>
-        <h2 className={styles.currMonth}>
-          {currMonth + " " + date.getFullYear()}
-        </h2>
+        <h2 className={styles.currMonth}>{currMonth + " " + currYear}</h2>
         <h4>
           Enter a maximum spending amount for your total monthly budget or a
           specific category.
@@ -132,6 +110,61 @@ const SpendingGoals = ({ totalPerType, totalExpenses }) => {
           add
         </button>
       </form>
+      <div className={styles.goals}>
+        {goals.map((goalItem, i) => {
+          var totalByCategory = ""
+          var barColor = ""
+
+          if (goalItem.category === "Monthly Total") {
+            totalByCategory = totalExpenses
+          } else {
+            totalByCategory = totalPerType.find(
+              (expense) => expense.type === goalItem.category
+            ).value
+          }
+
+          const percentTowardsGoal = (totalByCategory / goalItem.maxGoal) * 100
+
+          //set barColor based on percent
+          if (percentTowardsGoal <= 66) {
+            //green
+            barColor = "#09c674"
+          } else if (percentTowardsGoal > 66 && percentTowardsGoal < 80) {
+            //yellow
+            barColor = "#aca909"
+          } else if (percentTowardsGoal >= 80) {
+            //red
+            barColor = "#EC0B4F"
+          }
+
+          return (
+            <div className={styles.goalItem}>
+              <div className={styles.goalLabels}>
+                <span className={styles.category}>{goalItem.category}</span>
+                <span className={styles.remainder}>
+                  ${goalItem.maxGoal - totalByCategory} left
+                </span>
+              </div>
+              <div
+                className={styles.progressbar}
+                style={{
+                  "--width": percentTowardsGoal,
+                  "--bar-color": barColor,
+                }}
+                data-label={
+                  "$" + totalByCategory + " out of $" + goalItem.maxGoal
+                }
+              ></div>
+              <button
+                className={styles.delete}
+                onClick={() => removeGoal(goalItem.id)}
+              >
+                Delete
+              </button>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
