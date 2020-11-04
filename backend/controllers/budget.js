@@ -34,7 +34,7 @@ budgetRouter.get("/", async (request, response) => {
   }
 
   //Remove budget entries before current month
-  await BudgetItem.remove({ date: { "$ne": yearMonth } })
+  await BudgetItem.deleteMany({ date: { "$ne": yearMonth } })
   
   const budget = await BudgetItem.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(budget.map((budgetItem) => budgetItem.toJSON()))

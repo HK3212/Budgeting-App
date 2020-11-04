@@ -34,7 +34,7 @@ goalsRouter.get("/", async (request, response) => {
   }
 
   //Remove goal entries before current month
-  await Goal.remove({ date: { "$ne": yearMonth } })
+  await Goal.deleteMany({ date: { "$ne": yearMonth } })
 
   const goals = await Goal.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(goals.map((goal) => goal.toJSON()))
