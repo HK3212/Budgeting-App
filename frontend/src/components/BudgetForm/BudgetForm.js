@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Notification from "../Notification/Notification"
 import groupedOptions, { expenseOptions } from "../../data/options"
 import Select from "react-select"
 import styles from "./BudgetForm.module.scss"
@@ -7,6 +8,8 @@ const BudgetForm = ({ createBudgetItem }) => {
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [message, setMessage] = useState("")
 
   const handleAmount = (event) => {
     setAmount(event.target.value)
@@ -22,23 +25,46 @@ const BudgetForm = ({ createBudgetItem }) => {
 
   const addBudgetItem = (event) => {
     event.preventDefault()
-    //created item based on schema
-    if (
-      expenseOptions.some((checkType) => checkType.label === selectedOption)
-    ) {
-      createBudgetItem({
-        isIncome: false,
-        type: selectedOption,
-        description: description,
-        value: amount,
-      })
-    } else {
-      createBudgetItem({
-        isIncome: true,
-        type: selectedOption,
-        description: description,
-        value: amount,
-      })
+    try {
+      var msg = ""
+      if (amount === "") {
+        msg = msg + "Please enter an amount \n"
+      }
+      if (description === "") {
+        msg = msg + "Please enter a description \n"
+      }
+      if (selectedOption === "") {
+        msg = msg + "Please select a category"
+      }
+      if (msg !== "") {
+        throw msg
+      }
+      if (
+        expenseOptions.some((checkType) => checkType.label === selectedOption)
+      ) {
+        createBudgetItem({
+          isIncome: false,
+          type: selectedOption,
+          description: description,
+          value: amount,
+        })
+      } else {
+        createBudgetItem({
+          isIncome: true,
+          type: selectedOption,
+          description: description,
+          value: amount,
+        })
+      }
+      setMessage("Budget entry has been added!")
+      setTimeout(() => {
+        setMessage(null)
+      }, 4000)
+    } catch (exception) {
+      setErrorMessage(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
 
     setAmount("")
@@ -62,33 +88,36 @@ const BudgetForm = ({ createBudgetItem }) => {
   )
 
   return (
-    <form className={styles.form} onSubmit={addBudgetItem}>
-      <div style={{ width: "200px" }}>
-        <Select
-          onChange={handleOption}
-          options={groupedOptions}
-          formatGroupLabel={formatGroupLabel}
-          placeholder="Category"
+    <div className={styles.budgetForm}>
+      <Notification error={errorMessage} message={message} />
+      <form className={styles.form} onSubmit={addBudgetItem}>
+        <div style={{ width: "200px" }}>
+          <Select
+            onChange={handleOption}
+            options={groupedOptions}
+            formatGroupLabel={formatGroupLabel}
+            placeholder="Category"
+          />
+        </div>
+        <input
+          type="string"
+          placeholder="Description"
+          value={description}
+          onChange={handleDescription}
+          className={styles.forminput}
         />
-      </div>
-      <input
-        type="string"
-        placeholder="Description"
-        value={description}
-        onChange={handleDescription}
-        className={styles.forminput}
-      />
-      <input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={handleAmount}
-        className={styles.forminput}
-      />
-      <button type="submit" className={styles.btn}>
-        add
-      </button>
-    </form>
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={handleAmount}
+          className={styles.forminput}
+        />
+        <button type="submit" className={styles.btn}>
+          add
+        </button>
+      </form>
+    </div>
   )
 }
 

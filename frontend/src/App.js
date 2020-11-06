@@ -182,7 +182,7 @@ function App() {
 
   return (
     <div className="App">
-      <Notification message={errorMessage} />
+      <Notification error={errorMessage} message={null} />
       {user === null ? (
         userForm()
       ) : (

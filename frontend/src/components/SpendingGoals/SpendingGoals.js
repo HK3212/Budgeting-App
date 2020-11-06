@@ -12,6 +12,7 @@ const SpendingGoals = ({
   currYear,
 }) => {
   const [errorMessage, setErrorMessage] = useState("")
+  const [message, setMessage] = useState("")
   const [goals, setGoals] = useState([])
   const [maxValue, setMaxValue] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
@@ -48,6 +49,10 @@ const SpendingGoals = ({
       goalsService.create(newGoal).then((returnedItem) => {
         setGoals(goals.concat(returnedItem))
       })
+      setMessage("Goal has been added!")
+      setTimeout(() => {
+        setMessage(null)
+      }, 4000)
     } catch (exception) {
       if (selectedOption === "") {
         setErrorMessage("Please select a category")
@@ -56,7 +61,7 @@ const SpendingGoals = ({
       }
       setTimeout(() => {
         setErrorMessage(null)
-      }, 3000)
+      }, 4000)
     }
     setMaxValue("")
   }
@@ -84,7 +89,7 @@ const SpendingGoals = ({
   return (
     <div className={styles.goalsPage}>
       <div className={styles.headings}>
-        <Notification message={errorMessage} />
+        <Notification error={errorMessage} message={message} />
         <h1 className={styles.title}>Spending Goals</h1>
         <h2 className={styles.currMonth}>{currMonth + " " + currYear}</h2>
         <h4>

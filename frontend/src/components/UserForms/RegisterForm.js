@@ -16,6 +16,7 @@ const RegisterForm = ({
   const [newUser, setNewUser] = useState("")
   const [newPass, setNewPass] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [message, setMessage] = useState("")
 
   const handleUser = (event) => {
     setNewUser(event.target.value)
@@ -35,6 +36,10 @@ const RegisterForm = ({
         newUser,
         newPass,
       })
+      setMessage(newUser + " has successfully registered!")
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
       setNewUser("")
       setNewPass("")
       //return Error notif if user is already taken
@@ -42,13 +47,13 @@ const RegisterForm = ({
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 3000)
+      }, 4000)
     }
   }
 
   return (
     <div className={styles.userform}>
-      <Notification message={errorMessage} />
+      <Notification error={errorMessage} message={message} />
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <div>
