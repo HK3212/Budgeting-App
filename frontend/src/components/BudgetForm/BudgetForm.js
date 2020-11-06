@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import groupedOptions, { expenseOptions } from "../../data/options"
 import Select from "react-select"
 import styles from "./BudgetForm.module.scss"
@@ -43,8 +43,9 @@ const BudgetForm = ({ createBudgetItem }) => {
 
     setAmount("")
     setDescription("")
-    //setSelectedOption("")
   }
+
+  //setSelectedOption("")
 
   //Styling for dropdown
   const groupStyles = {

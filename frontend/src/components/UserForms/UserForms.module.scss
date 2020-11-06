@@ -48,4 +48,13 @@
   &:focus::placeholder {
     opacity: 0.2;
   }
+
+  &:invalid {
+    border-color: red;
+    box-shadow: none;
+  }
+
+  &:invalid:focus {
+    border-color: red;
+  }
 }

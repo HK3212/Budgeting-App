@@ -36,7 +36,9 @@ const SpendingGoals = ({
     try {
       //Check if there are any budget entries for category
       if (selectedOption !== "Monthly Total") {
-        totalPerType.find((expense) => expense.type === selectedOption)
+        const checkTotal = totalPerType.find(
+          (expense) => expense.type === selectedOption
+        ).value
       }
 
       const newGoal = {
@@ -87,7 +89,7 @@ const SpendingGoals = ({
         <h2 className={styles.currMonth}>{currMonth + " " + currYear}</h2>
         <h4>
           Enter a maximum spending amount for your total monthly budget or a
-          specific category.
+          specific category. One goal per category
         </h4>
       </div>
       <form className={styles.form} onSubmit={addSpendingGoal}>

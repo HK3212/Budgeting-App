@@ -20,8 +20,6 @@ function App() {
   const [budget, setBudget] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [newUser, setNewUser] = useState("")
-  const [newPass, setNewPass] = useState("")
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [switchForm, setSwitchForm] = useState(false)
@@ -71,16 +69,6 @@ function App() {
     }
   }
 
-  const handleRegister = async (event) => {
-    event.preventDefault()
-    const user = await userService.register({
-      newUser,
-      newPass,
-    })
-    setNewUser("")
-    setNewPass("")
-  }
-
   const handleLogout = async (event) => {
     event.preventDefault()
     localStorage.removeItem("loggedbudgetappUser")
@@ -101,16 +89,7 @@ function App() {
         />
       )
     } else {
-      return (
-        <RegisterForm
-          username={newUser}
-          password={newPass}
-          handleUsernameChange={({ target }) => setNewUser(target.value)}
-          handlePasswordChange={({ target }) => setNewPass(target.value)}
-          handleSubmit={handleRegister}
-          switchForm={() => setSwitchForm(!switchForm)}
-        />
-      )
+      return <RegisterForm switchForm={() => setSwitchForm(!switchForm)} />
     }
   }
 
@@ -178,10 +157,6 @@ function App() {
       (d) => d.type
     )
     .map(([type, value]) => ({ type: type, value: value }))
-
-  useEffect(() => {
-    console.log(totalPerType)
-  }, [totalPerType])
 
   const getMonth = (index) => {
     const months = [

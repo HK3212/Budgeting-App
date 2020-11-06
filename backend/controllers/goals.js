@@ -41,7 +41,7 @@ goalsRouter.get("/", async (request, response) => {
 })
 
 //TODO: post request to create new spending goal
-goalsRouter.post("/", async (request, response) => {
+goalsRouter.post("/", async (request, response, next) => {
   const body = request.body
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)

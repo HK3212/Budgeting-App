@@ -1,5 +1,7 @@
 //TODO: Add register form
-import React from "react"
+import React, { useState } from "react"
+import userService from "../../services/user"
+import Notification from "../Notification/Notification"
 import PropTypes from "prop-types"
 import styles from "./UserForms.module.scss"
 
@@ -11,17 +13,51 @@ const RegisterForm = ({
   password,
   switchForm,
 }) => {
+  const [newUser, setNewUser] = useState("")
+  const [newPass, setNewPass] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const handleUser = (event) => {
+    setNewUser(event.target.value)
+  }
+
+  const handlePass = (event) => {
+    setNewPass(event.target.value)
+  }
+
+  const handleRegister = async (event) => {
+    event.preventDefault()
+    try {
+      if (newUser === "" || newPass === "") {
+        throw "username or password field is empty"
+      }
+      const user = await userService.register({
+        newUser,
+        newPass,
+      })
+      setNewUser("")
+      setNewPass("")
+      //return Error notif if user is already taken
+    } catch (exception) {
+      setErrorMessage(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
+  }
+
   return (
     <div className={styles.userform}>
+      <Notification message={errorMessage} />
       <h2>Register</h2>
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRegister}>
         <div>
           <input
             placeholder="Username"
             className={styles.input}
-            value={username}
-            onChange={handleUsernameChange}
+            value={newUser}
+            onChange={handleUser}
+            minLength="4"
           />
         </div>
         <div className={styles.divbtn} />
@@ -30,8 +66,9 @@ const RegisterForm = ({
             placeholder="Password"
             className={styles.input}
             type="password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={newPass}
+            onChange={handlePass}
+            minLength="4"
           />
         </div>
         <div className={styles.buttons}>
