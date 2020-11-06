@@ -7,7 +7,7 @@ const goalSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   maxGoal: {
     type: Number,
@@ -20,8 +20,11 @@ const goalSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    unique: false,
   }
 })
+
+goalSchema.index({ user: 1, category: 1 }, { unique: true })
 
 goalSchema.plugin(uniqueValidator)
 

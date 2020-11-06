@@ -48,11 +48,11 @@ const SpendingGoals = ({
       }
       goalsService.create(newGoal).then((returnedItem) => {
         setGoals(goals.concat(returnedItem))
+        setMessage("Goal has been added!")
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       })
-      setMessage("Goal has been added!")
-      setTimeout(() => {
-        setMessage(null)
-      }, 4000)
     } catch (exception) {
       if (selectedOption === "") {
         setErrorMessage("Please select a category")
@@ -112,6 +112,7 @@ const SpendingGoals = ({
           value={maxValue}
           onChange={handleMaxValue}
           className={styles.forminput}
+          required="true"
         />
         <button type="submit" className={styles.btn}>
           add
