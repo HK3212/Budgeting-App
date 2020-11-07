@@ -2,6 +2,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import styles from "./UserForms.module.scss"
+import Notification from "../Notification/Notification"
 
 const LoginForm = ({
   handleSubmit,
@@ -10,9 +11,11 @@ const LoginForm = ({
   username,
   password,
   switchForm,
+  message,
 }) => {
   return (
     <div className={styles.userform}>
+      <Notification error={message} message={null} />
       <h2 className={styles.title}>Budget Tracker</h2>
 
       <form onSubmit={handleSubmit}>

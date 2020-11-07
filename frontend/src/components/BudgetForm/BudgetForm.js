@@ -59,12 +59,12 @@ const BudgetForm = ({ createBudgetItem }) => {
       setMessage("Budget entry has been added!")
       setTimeout(() => {
         setMessage(null)
-      }, 4000)
+      }, 3000)
     } catch (exception) {
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
     }
 
     setAmount("")

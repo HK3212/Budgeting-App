@@ -51,7 +51,7 @@ const SpendingGoals = ({
         setMessage("Goal has been added!")
         setTimeout(() => {
           setMessage(null)
-        }, 4000)
+        }, 3000)
       })
     } catch (exception) {
       if (selectedOption === "") {
@@ -61,7 +61,7 @@ const SpendingGoals = ({
       }
       setTimeout(() => {
         setErrorMessage(null)
-      }, 4000)
+      }, 3000)
     }
     setMaxValue("")
   }

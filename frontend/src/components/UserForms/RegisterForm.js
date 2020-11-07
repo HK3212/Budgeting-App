@@ -47,7 +47,7 @@ const RegisterForm = ({
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 4000)
+      }, 3000)
     }
   }
 

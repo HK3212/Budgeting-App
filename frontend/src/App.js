@@ -79,14 +79,17 @@ function App() {
   const userForm = () => {
     if (!switchForm) {
       return (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-          switchForm={() => setSwitchForm(!switchForm)}
-        />
+        <div className="login">
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+            switchForm={() => setSwitchForm(!switchForm)}
+            message={errorMessage}
+          />
+        </div>
       )
     } else {
       return <RegisterForm switchForm={() => setSwitchForm(!switchForm)} />
@@ -182,7 +185,6 @@ function App() {
 
   return (
     <div className="App">
-      <Notification error={errorMessage} message={null} />
       {user === null ? (
         userForm()
       ) : (
