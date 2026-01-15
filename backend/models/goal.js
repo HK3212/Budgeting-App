@@ -1,8 +1,6 @@
 const mongoose = require("mongoose")
 const uniqueValidator = require("mongoose-unique-validator")
 
-mongoose.set("useFindAndModify", false)
-
 const goalSchema = new mongoose.Schema({
   category: {
     type: String,

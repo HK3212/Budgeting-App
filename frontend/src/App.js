@@ -4,7 +4,7 @@ import Budget from "./components/Budget/Budget"
 import BudgetForm from "./components/BudgetForm/BudgetForm"
 import LoginForm from "./components/UserForms/LoginForm"
 import RegisterForm from "./components/UserForms/RegisterForm"
-import NumberFormat from "react-number-format"
+import { NumericFormat } from "react-number-format"
 import PieChart from "./components/PieChart/PieChart"
 import SpendingGoals from "./components/SpendingGoals/SpendingGoals"
 import Notification from "./components/Notification/Notification"
@@ -14,7 +14,7 @@ import budgetService from "./services/budget"
 import loginService from "./services/login"
 import userService from "./services/user"
 import goalsService from "./services/goals"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 function App() {
   const [budget, setBudget] = useState([])
@@ -205,16 +205,16 @@ function App() {
               </Link>
             </div>
           </div>
-          <Switch>
-            <Route path="/goals">
+          <Routes>
+            <Route path="/goals" element={
               <SpendingGoals
                 totalPerType={totalPerType}
                 totalExpenses={totalExpenses}
                 currMonth={currMonth}
                 currYear={currYear}
               />
-            </Route>
-            <Route path="/">
+            } />
+            <Route path="/" element={
               <div className="budget">
                 <h1 className="title">Monthly Budget</h1>
                 <h2 className="currMonth">{currMonth + " " + currYear}</h2>
@@ -225,7 +225,7 @@ function App() {
                 <div className="budgetTotals">
                   <span>
                     Total Income:
-                    <NumberFormat
+                    <NumericFormat
                       className="positive"
                       value={totalIncome}
                       displayType={"text"}
@@ -236,7 +236,7 @@ function App() {
                   <br></br>
                   <span>
                     Total Expenses:
-                    <NumberFormat
+                    <NumericFormat
                       className="negative"
                       value={totalExpenses}
                       displayType={"text"}
@@ -247,7 +247,7 @@ function App() {
                   <br></br>
                   <span>
                     Savings:
-                    <NumberFormat
+                    <NumericFormat
                       className={savingsClass}
                       value={savings}
                       displayType={"text"}
@@ -264,8 +264,8 @@ function App() {
                   outerRadius={100}
                 />
               </div>
-            </Route>
-          </Switch>
+            } />
+          </Routes>
         </Router>
       )}
     </div>

@@ -1,5 +1,5 @@
 import React from "react"
-import NumberFormat from "react-number-format"
+import { NumericFormat } from "react-number-format"
 import styles from "./Budget.module.scss"
 
 //Display budget entries, negative values for expenses
@@ -22,7 +22,7 @@ const Budget = ({ budget, removeBudgetItem }) => {
               <td className={styles.description}>{budgetItem.description}</td>
               {budgetItem.isIncome === true ? (
                 <td className={styles.income}>
-                  <NumberFormat
+                  <NumericFormat
                     value={budgetItem.value}
                     displayType={"text"}
                     prefix={"$"}
@@ -31,7 +31,7 @@ const Budget = ({ budget, removeBudgetItem }) => {
                 </td>
               ) : (
                 <td className={styles.expense}>
-                  <NumberFormat
+                  <NumericFormat
                     value={budgetItem.value}
                     displayType={"text"}
                     prefix={"$"}

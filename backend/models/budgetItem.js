@@ -1,7 +1,5 @@
 const mongoose = require("mongoose")
 
-mongoose.set("useFindAndModify", false)
-
 const budgetItemSchema = new mongoose.Schema({
   isIncome: Boolean,
   type: {
