@@ -38,3 +38,70 @@ body {
 .title {
   text-align: center;
 }
+
+.plaid-link-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.net-worth-widget {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+
+  h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .net-worth-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 15px;
+  }
+
+  .accounts-list {
+    .account-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .refresh-button {
+    margin-top: 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}

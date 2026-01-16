@@ -8,6 +8,9 @@ import { NumericFormat } from "react-number-format"
 import PieChart from "./components/PieChart/PieChart"
 import SpendingGoals from "./components/SpendingGoals/SpendingGoals"
 import Notification from "./components/Notification/Notification"
+import LinkAccount from "./components/LinkAccount/LinkAccount"
+import NetWorthWidget from "./components/NetWorthWidget/NetWorthWidget"
+import RetirementPlanner from "./components/RetirementPlanner/RetirementPlanner"
 import * as d3 from "d3"
 import * as d3arr from "d3-array"
 import budgetService from "./services/budget"
@@ -153,13 +156,13 @@ function App() {
 
   //Total for each expense type
   //TODO: Add Savings to expense chart
-const totalPerType = d3arr
-  .rollups(
-    expenseItems.concat({ type: "Savings", value: savings }),
-    (val) => d3.sum(val, (budgetItem) => budgetItem.value),
-    (d) => d.type
-  )
-  .map(([type, value]) => ({ type: type, value: value }))
+  const totalPerType = d3arr
+    .rollups(
+      expenseItems.concat({ type: "Savings", value: savings }),
+      (val) => d3.sum(val, (budgetItem) => budgetItem.value),
+      (d) => d.type
+    )
+    .map(([type, value]) => ({ type: type, value: value }))
 
   const getMonth = (index) => {
     const months = [
@@ -197,6 +200,12 @@ const totalPerType = d3arr
               <Link className="navitem" to="/goals">
                 Goals
               </Link>
+              <Link className="navitem" to="/accounts">
+                Accounts
+              </Link>
+              <Link className="navitem" to="/retirement">
+                Retirement
+              </Link>
             </div>
             <div className="rightnav">
               {user.username} logged in
@@ -206,65 +215,88 @@ const totalPerType = d3arr
             </div>
           </div>
           <Routes>
-            <Route path="/goals" element={
-              <SpendingGoals
-                totalPerType={totalPerType}
-                totalExpenses={totalExpenses}
-                currMonth={currMonth}
-                currYear={currYear}
-              />
-            } />
-            <Route path="/" element={
-              <div className="budget">
-                <h1 className="title">Monthly Budget</h1>
-                <h2 className="currMonth">{currMonth + " " + currYear}</h2>
-                <BudgetForm createBudgetItem={createBudgetItem} />
-                <div className="budgetItems">
-                  <Budget budget={budget} removeBudgetItem={removeBudgetItem} />
-                </div>
-                <div className="budgetTotals">
-                  <span>
-                    Total Income:
-                    <NumericFormat
-                      className="positive"
-                      value={totalIncome}
-                      displayType={"text"}
-                      prefix={"$"}
-                      thousandSeparator={true}
-                    />
-                  </span>
-                  <br></br>
-                  <span>
-                    Total Expenses:
-                    <NumericFormat
-                      className="negative"
-                      value={totalExpenses}
-                      displayType={"text"}
-                      prefix={"$"}
-                      thousandSeparator={true}
-                    />
-                  </span>
-                  <br></br>
-                  <span>
-                    Savings:
-                    <NumericFormat
-                      className={savingsClass}
-                      value={savings}
-                      displayType={"text"}
-                      prefix={"$"}
-                      thousandSeparator={true}
-                    />
-                  </span>
-                </div>
-                <PieChart
-                  data={totalPerType}
-                  width={400}
-                  height={400}
-                  innerRadius={60}
-                  outerRadius={100}
+            <Route
+              path="/goals"
+              element={
+                <SpendingGoals
+                  totalPerType={totalPerType}
+                  totalExpenses={totalExpenses}
+                  currMonth={currMonth}
+                  currYear={currYear}
                 />
-              </div>
-            } />
+              }
+            />
+            <Route
+              path="/accounts"
+              element={
+                <div className="accounts-page">
+                  <h1 className="title">Linked Accounts</h1>
+                  <LinkAccount
+                    user={user}
+                    onAccountLinked={() => window.location.reload()}
+                  />
+                  <NetWorthWidget user={user} />
+                </div>
+              }
+            />
+            <Route path="/retirement" element={<RetirementPlanner />} />
+            <Route
+              path="/"
+              element={
+                <div className="budget">
+                  <h1 className="title">Monthly Budget</h1>
+                  <h2 className="currMonth">{currMonth + " " + currYear}</h2>
+                  <BudgetForm createBudgetItem={createBudgetItem} />
+                  <div className="budgetItems">
+                    <Budget
+                      budget={budget}
+                      removeBudgetItem={removeBudgetItem}
+                    />
+                  </div>
+                  <div className="budgetTotals">
+                    <span>
+                      Total Income:
+                      <NumericFormat
+                        className="positive"
+                        value={totalIncome}
+                        displayType={"text"}
+                        prefix={"$"}
+                        thousandSeparator={true}
+                      />
+                    </span>
+                    <br></br>
+                    <span>
+                      Total Expenses:
+                      <NumericFormat
+                        className="negative"
+                        value={totalExpenses}
+                        displayType={"text"}
+                        prefix={"$"}
+                        thousandSeparator={true}
+                      />
+                    </span>
+                    <br></br>
+                    <span>
+                      Savings:
+                      <NumericFormat
+                        className={savingsClass}
+                        value={savings}
+                        displayType={"text"}
+                        prefix={"$"}
+                        thousandSeparator={true}
+                      />
+                    </span>
+                  </div>
+                  <PieChart
+                    data={totalPerType}
+                    width={400}
+                    height={400}
+                    innerRadius={60}
+                    outerRadius={100}
+                  />
+                </div>
+              }
+            />
           </Routes>
         </Router>
       )}

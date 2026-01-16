@@ -1,0 +1,621 @@
+@import "../../Variables.scss";
+
+.retirementPlanner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: $font-stack;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.inputSection {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.chartSection {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formTitle {
+  font-size: 1.25rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.input {
+  padding: 0.625rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  }
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  appearance: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    border: none;
+  }
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.chartContainer {
+  position: relative;
+}
+
+.chartTitle {
+  font-size: 1.25rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 100;
+  line-height: 1.4;
+}
+
+.projectionSummary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.summaryLabel {
+  font-size: 1rem;
+}
+
+.summaryValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.compoundSection {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.compoundInterest {
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.compoundContent {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.visualSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stackedBar {
+  width: 80px;
+  height: 250px;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contributionBar {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.5s ease;
+}
+
+.interestBar {
+  background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.5s ease;
+}
+
+.barLabel {
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-align: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.explanationSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formula {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+
+  h3 {
+    font-size: 1rem;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.formulaText {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  color: #1f2937;
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.formulaLegend {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+
+  p {
+    margin: 0;
+  }
+}
+
+.insight {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.insightCard {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.insightValue {
+  font-size: 2.5rem;
+  font-weight: bold;
+  display: block;
+}
+
+.insightLabel {
+  font-size: 0.9rem;
+}
+
+.insightText {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.toggleButton {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 1.5rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #4b5563;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+.breakdownTable {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: right;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  th {
+    background: #f9fafb;
+    color: #4b5563;
+    font-weight: 600;
+  }
+
+  td {
+    color: #1f2937;
+  }
+
+  tr:hover td {
+    background: #f9fafb;
+  }
+}
+
+.bottomSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.scenarioSection,
+.milestoneSection {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.scenarioComparison {
+  width: 100%;
+}
+
+.scenarioSubtitle,
+.milestoneSubtitle {
+  color: #6b7280;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.scenarioDetails {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.scenarioCard {
+  flex: 1;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 4px solid;
+
+  h4 {
+    font-size: 0.9rem;
+    color: #1f2937;
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.milestoneTimeline {
+  width: 100%;
+}
+
+.timeline {
+  position: relative;
+  height: 120px;
+  margin: 2rem 0;
+  padding: 0 20px;
+}
+
+.timelineTrack {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  transform: translateY(-50%);
+}
+
+.timelineProgress {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 3px;
+}
+
+.currentMarker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.markerDot {
+  width: 16px;
+  height: 16px;
+  background: #10b981;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.markerLabel {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.milestoneMarker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  &.achieved {
+    .milestonePoint {
+      background: #10b981;
+      border-color: #fff;
+    }
+  }
+}
+
+.milestonePoint {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+}
+
+.milestoneInfo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.milestoneName {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.milestoneAge {
+  display: block;
+  font-size: 0.65rem;
+  color: #6b7280;
+}
+
+.milestoneTarget {
+  display: block;
+  font-size: 0.65rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.milestoneCards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.milestoneCard {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+
+  &.achievedCard {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+}
+
+.milestoneStatus {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+.checkmark {
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.pending {
+  color: #d1d5db;
+  font-size: 1rem;
+}
+
+.milestoneContent {
+  flex: 1;
+
+  h4 {
+    font-size: 0.85rem;
+    color: #1f2937;
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.milestoneAgeTag {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  background: #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: #4b5563;
+}
+
+@media (max-width: 900px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+
+  .compoundContent {
+    grid-template-columns: 1fr;
+  }
+
+  .visualSection {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .stackedBar {
+    height: 200px;
+  }
+
+  .bottomSection {
+    grid-template-columns: 1fr;
+  }
+
+  .formulaLegend {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .milestoneCards {
+    grid-template-columns: 1fr;
+  }
+}

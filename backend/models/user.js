@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
   passwordHash: {
     type: String,
     unique: true,
-  }
+  },
+  plaidAccessToken: String,
+  plaidItemId: String,
 })
 
 userSchema.plugin(uniqueValidator)

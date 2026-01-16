@@ -11,6 +11,7 @@ const budgetRouter = require("./controllers/budget")
 const usersRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
 const goalsRouter = require("./controllers/goals")
+const plaidRouter = require("./controllers/plaid")
 
 mongoose.connect(config.MONGODB_URI)
   .then(() => {
@@ -29,6 +30,7 @@ app.use("/api/budget", budgetRouter)
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
 app.use("/api/goals", goalsRouter)
+app.use("/api/plaid", plaidRouter)
 
 // if (process.env.NODE_ENV === 'test') {
 //   const testingRouter = require('./controllers/testing')
