@@ -20,7 +20,6 @@ const getYearMonth = () => {
   return yearMonth
 }
 
-//TODO: get request for retreiving spending goals
 goalsRouter.get("/", async (request, response) => {
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -30,17 +29,16 @@ goalsRouter.get("/", async (request, response) => {
   const loggedUser = await User.findById(decodedToken.id)
 
   if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid"})
+    return response.status(401).json({ error: "token missing or invalid" })
   }
 
   //Remove goal entries before current month
-  await Goal.deleteMany({ date: { "$ne": yearMonth } })
+  await Goal.deleteMany({ date: { "$ne": yearMonth } });
 
   const goals = await Goal.find({ user: loggedUser, date: yearMonth }).populate('user', { username: 1, name: 1 })
   response.json(goals.map((goal) => goal.toJSON()))
 })
 
-//TODO: post request to create new spending goal
 goalsRouter.post("/", async (request, response, next) => {
   const body = request.body
   const token = getTokenFrom(request)
@@ -48,7 +46,7 @@ goalsRouter.post("/", async (request, response, next) => {
   const yearMonth = getYearMonth()
 
   if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid"})
+    return response.status(401).json({ error: "token missing or invalid" })
   }
 
   const user = await User.findById(decodedToken.id)
@@ -65,9 +63,25 @@ goalsRouter.post("/", async (request, response, next) => {
   response.json(savedGoal.toJSON())
 })
 
-//TODO: delete request to remove spending goal
-goalsRouter.delete("/:id", async (request, response, next) => {
-  await Goal.findByIdAndRemove(request.params.id)
+goalsRouter.delete("/:id", async (request, response) => {
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" })
+  }
+
+  const goal = await Goal.findById(request.params.id)
+
+  if (!goal) {
+    return response.status(404).json({ error: "goal not found" })
+  }
+
+  if (goal.user.toString() !== decodedToken.id) {
+    return response.status(401).json({ error: "only the creator can delete this goal" })
+  }
+
+  await Goal.findByIdAndDelete(request.params.id)
   response.status(204).end()
 })
 

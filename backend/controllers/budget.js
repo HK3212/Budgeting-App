@@ -67,12 +67,61 @@ budgetRouter.post("/", async (request, response, next) => {
   response.json(savedBudgetItem.toJSON())
 })
 
-//TODO: delete request to remove budget item
-budgetRouter.delete("/:id", async (request, response, next) => {
-  await BudgetItem.findByIdAndRemove(request.params.id)
+budgetRouter.delete("/:id", async (request, response) => {
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" })
+  }
+
+  const budgetItem = await BudgetItem.findById(request.params.id)
+
+  if (!budgetItem) {
+    return response.status(404).json({ error: "budget item not found" })
+  }
+
+  if (budgetItem.user.toString() !== decodedToken.id) {
+    return response.status(401).json({ error: "only the creator can delete this item" })
+  }
+
+  await BudgetItem.findByIdAndDelete(request.params.id)
   response.status(204).end()
 })
 
-//TODO: put request to update budget item
+budgetRouter.put("/:id", async (request, response) => {
+  const body = request.body
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" })
+  }
+
+  const budgetItem = {
+    type: body.type,
+    description: body.description,
+    isIncome: body.isIncome,
+    value: body.value,
+  }
+
+  const itemToUpdate = await BudgetItem.findById(request.params.id)
+
+  if (!itemToUpdate) {
+    return response.status(404).json({ error: "budget item not found" })
+  }
+
+  if (itemToUpdate.user.toString() !== decodedToken.id) {
+    return response.status(401).json({ error: "only the creator can update this item" })
+  }
+
+  const updatedBudgetItem = await BudgetItem.findByIdAndUpdate(
+    request.params.id,
+    budgetItem,
+    { new: true }
+  )
+
+  response.json(updatedBudgetItem.toJSON())
+})
 
 module.exports = budgetRouter

@@ -153,13 +153,13 @@ function App() {
 
   //Total for each expense type
   //TODO: Add Savings to expense chart
-  const totalPerType = d3arr
-    .rollups(
-      expenseItems,
-      (val) => d3.sum(val, (budgetItem) => budgetItem.value),
-      (d) => d.type
-    )
-    .map(([type, value]) => ({ type: type, value: value }))
+const totalPerType = d3arr
+  .rollups(
+    expenseItems.concat({ type: "Savings", value: savings }),
+    (val) => d3.sum(val, (budgetItem) => budgetItem.value),
+    (d) => d.type
+  )
+  .map(([type, value]) => ({ type: type, value: value }))
 
   const getMonth = (index) => {
     const months = [

@@ -12,12 +12,7 @@ const usersRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
 const goalsRouter = require("./controllers/goals")
 
-mongoose.connect(config.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  autoIndex: true,
-})
+mongoose.connect(config.MONGODB_URI)
   .then(() => {
     logger.info("connected to MongoDB")
   })
