@@ -44,7 +44,11 @@ const RegisterForm = ({
       setNewPass("")
       //return Error notif if user is already taken
     } catch (exception) {
-      setErrorMessage(exception)
+      const errorMsg =
+        exception.response?.data?.error ||
+        exception.message ||
+        "Registration failed"
+      setErrorMessage(errorMsg)
       setTimeout(() => {
         setErrorMessage(null)
       }, 3000)

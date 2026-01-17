@@ -1,34 +1,54 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import plaidService from "../../services/plaid"
 import { NumericFormat } from "react-number-format"
 
 const NetWorthWidget = ({ user }) => {
   const [accounts, setAccounts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [hasFetched, setHasFetched] = useState(false)
 
   const fetchBalances = async () => {
     try {
       setLoading(true)
+      setError(null)
       plaidService.setToken(user.token)
       const data = await plaidService.getBalance()
       setAccounts(data.accounts)
+      setHasFetched(true)
       setLoading(false)
     } catch (err) {
       console.error("Error fetching balances:", err)
-      setError("Failed to fetch account balances. Please link your account.")
+      if (
+        err.response?.status === 400 &&
+        err.response?.data?.error === "Plaid not linked"
+      ) {
+        setError(
+          "No bank accounts linked yet. Use the button above to link your account."
+        )
+      } else {
+        setError(
+          "Unable to fetch account balances. Plaid may not be configured."
+        )
+      }
+      setHasFetched(true)
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    if (user) {
-      fetchBalances()
-    }
-  }, [user])
-
   if (loading) return <div>Loading account data...</div>
   if (error) return <div className="error">{error}</div>
+
+  if (!hasFetched) {
+    return (
+      <div className="net-worth-widget">
+        <p>Click the button below to fetch your linked account balances.</p>
+        <button onClick={fetchBalances} className="refresh-button">
+          Fetch Balances
+        </button>
+      </div>
+    )
+  }
 
   const totalNetWorth = accounts.reduce(
     (acc, account) => acc + account.balances.current,
