@@ -66,8 +66,12 @@ export const generateProjection = (inputs) => {
     currentSavings,
     monthlyContribution,
     annualReturnRate,
+    inflationRate,
     monthlyRetirementSpending,
   } = inputs
+
+  // Use real return rate (nominal - inflation) for more accurate projections
+  const realReturnRate = annualReturnRate - inflationRate
 
   const projection = []
   const currentYear = new Date().getFullYear()
@@ -87,7 +91,7 @@ export const generateProjection = (inputs) => {
       const endBalance = calculateFutureValue(
         yearStartBalance,
         monthlyContribution,
-        annualReturnRate,
+        realReturnRate,
         1
       )
 
@@ -113,7 +117,7 @@ export const generateProjection = (inputs) => {
       const endBalance = calculateWithdrawalBalance(
         yearStartBalance,
         monthlyRetirementSpending,
-        annualReturnRate * 0.6, // More conservative in retirement
+        realReturnRate * 0.6, // More conservative in retirement
         1
       )
 
@@ -150,14 +154,18 @@ export const calculateCompoundBreakdown = (inputs) => {
     currentSavings,
     monthlyContribution,
     annualReturnRate,
+    inflationRate,
   } = inputs
+
+  // Use real return rate (nominal - inflation)
+  const realReturnRate = annualReturnRate - inflationRate
 
   const years = retirementAge - currentAge
   const totalContributions = currentSavings + monthlyContribution * 12 * years
   const finalBalance = calculateFutureValue(
     currentSavings,
     monthlyContribution,
-    annualReturnRate,
+    realReturnRate,
     years
   )
   const totalInterest = finalBalance - totalContributions
@@ -175,7 +183,7 @@ export const calculateCompoundBreakdown = (inputs) => {
       runningBalance = calculateFutureValue(
         yearStart,
         monthlyContribution,
-        annualReturnRate,
+        realReturnRate,
         1
       )
       const yearInterest = runningBalance - yearStart - yearlyContrib
@@ -251,7 +259,15 @@ export const calculateScenarios = (inputs) => {
  * Calculate financial independence milestones
  */
 export const calculateMilestones = (inputs, projection) => {
-  const { monthlyRetirementSpending, retirementAge } = inputs
+  const {
+    monthlyRetirementSpending,
+    retirementAge,
+    annualReturnRate,
+    inflationRate,
+  } = inputs
+
+  // Use real return rate (nominal - inflation)
+  const realReturnRate = annualReturnRate - inflationRate
 
   const annualSpending = monthlyRetirementSpending * 12
 
@@ -329,7 +345,7 @@ export const calculateMilestones = (inputs, projection) => {
         const futureValue = calculateFutureValue(
           point.balance,
           0, // No more contributions
-          inputs.annualReturnRate,
+          realReturnRate,
           yearsToRetirement
         )
         if (futureValue >= regularFI) {

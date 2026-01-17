@@ -34,7 +34,11 @@ const create = async (newObject) => {
 
 //Handle delete request
 const remove = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`)
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.then((response) => response.data)
 }
 

@@ -27,13 +27,13 @@ const CompoundInterestVisual = ({ breakdown, inputs }) => {
               className={styles.contributionBar}
               style={{ height: `${contributionPercent}%` }}
             >
-              <span className={styles.barLabel}>Your Contributions</span>
+              <span className={styles.barLabel}></span>
             </div>
             <div
               className={styles.interestBar}
               style={{ height: `${interestPercent}%` }}
             >
-              <span className={styles.barLabel}>Interest Earned</span>
+              <span className={styles.barLabel}></span>
             </div>
           </div>
 

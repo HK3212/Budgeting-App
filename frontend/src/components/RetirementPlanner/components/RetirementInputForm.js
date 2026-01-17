@@ -33,13 +33,19 @@ const RetirementInputForm = ({ inputs, onChange }) => {
         <NumericFormat
           value={inputs.retirementAge}
           onValueChange={handleNumberChange("retirementAge")}
-          className={styles.input}
+          className={`${styles.input} ${inputs.retirementAge <= inputs.currentAge ? styles.inputError : ""}`}
           allowNegative={false}
           decimalScale={0}
-          isAllowed={(values) =>
-            values.floatValue <= 100 && values.floatValue > inputs.currentAge
-          }
+          isAllowed={(values) => {
+            if (values.floatValue === undefined) return true
+            return values.floatValue <= 100
+          }}
         />
+        {inputs.retirementAge <= inputs.currentAge && (
+          <span className={styles.errorText}>
+            Must be greater than current age
+          </span>
+        )}
       </div>
 
       <div className={styles.inputGroup}>
